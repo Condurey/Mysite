@@ -182,6 +182,11 @@
                     <include>**/*.xml</include>
                     <!--加载模板文件-->
                     <include>**/*.html</include>
+                    <include>**/*.js</include>
+                    <include>**/*.css</include>
+                    <include>**/*.png</include>
+                    <include>**/*.gif</include>
+                    <include>**/*.jpg</include>
                     <!--加载静态文件-->
                     <include>/static/</include>
                 </includes>
@@ -195,6 +200,11 @@
                     <include>**/*.xml</include>
                     <!--加载模板文件-->
                     <include>**/*.html</include>
+                    <include>**/*.js</include>
+                    <include>**/*.css</include>
+                    <include>**/*.png</include>
+                    <include>**/*.gif</include>
+                    <include>**/*.jpg</include>
                     <!--加载静态文件-->
                     <include>/static/</include>
                 </includes>
