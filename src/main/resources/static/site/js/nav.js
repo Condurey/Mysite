@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    const menu_button = $('#menu-button')
+    const menu_button = $('#menu-button');
     if (menu_button.length !== 0) {
         return
     }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.cdr.dao.CommentDao">
+<mapper namespace="com.mysite.dao.CommentDao">
 
     <sql id="BASE_TABLE">
         t_comments
@@ -8,16 +8,16 @@
 
     <!-- 基本列 -->
     <sql id="BASE_COLUMN">
-        cm.coid, cm.cid, cm.created, cm.author, cm.authorId, cm.ownerId, cm.mail,
+        cm.coid, cm.cid, cm.created, cm.author, cm.author_id, cm.owner_id, cm.mail,
         cm.url, cm.ip, cm.agent, cm.type, cm.status, cm.parent, cm.content
     </sql>
 
     <!-- 新增评论 -->
-    <insert id="addComment" parameterType="com.cdr.model.CommentDomain">
+    <insert id="addComment" parameterType="com.mysite.model.entity.Comment">
         INSERT INTO
         <include refid="BASE_TABLE"/>
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            cid, created, author, authorId, ownerId, mail,
+            cid, created, author, author_id, owner_id, mail,
             url, ip, agent, type, status, parent, content,
         </trim>
         <trim prefix="VALUES(" suffix=")" suffixOverrides=",">
@@ -43,7 +43,7 @@
         WHERE coid = #{coid, jdbcType=INTEGER}
     </update>
 
-    <select id="getCommentById" resultType="com.cdr.model.CommentDomain">
+    <select id="getCommentById" resultType="com.mysite.model.entity.Comment">
         SELECT
         <include refid="BASE_COLUMN"/>
         FROM
@@ -52,7 +52,7 @@
     </select>
 
     <!-- 根据文章的主键获取评论列表:只显示正常的评论 -->
-    <select id="getCommentsByCId" resultType="com.cdr.model.CommentDomain">
+    <select id="getCommentsByCId" resultType="com.mysite.model.entity.Comment">
         SELECT
         <include refid="BASE_COLUMN"/>
         FROM
@@ -63,8 +63,8 @@
     </select>
 
     <!-- 根据条件查找评论列表 -->
-    <select id="getCommentsByCond" resultType="com.cdr.model.CommentDomain"
-            parameterType="com.cdr.dto.cond.CommentCond">
+    <select id="getCommentsByCond" resultType="com.mysite.model.entity.Comment"
+            parameterType="com.mysite.model.dto.cond.CommentCond">
         SELECT
         <include refid="BASE_COLUMN"/>
         FROM

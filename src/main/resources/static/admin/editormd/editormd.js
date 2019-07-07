@@ -3810,7 +3810,7 @@
     editormd.filterHTMLTags = function(html, filters) {
         
         if (typeof html !== "string") {
-            html = new String(html);
+            html = String(html);
         }
             
         if (typeof filters !== "string") {
@@ -3956,8 +3956,8 @@
             smartLists  : true,
             smartypants : true
         };
-        
-		markdownDoc = new String(markdownDoc);
+
+        markdownDoc = String(markdownDoc);
         
         var markdownParsed = marked(markdownDoc, markedOptions);
         
