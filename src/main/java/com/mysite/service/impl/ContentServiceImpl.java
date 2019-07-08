@@ -27,7 +27,7 @@ import java.util.List;
 /**
  * Created by Donghua.Chen on 2018/4/29.
  */
-@Service
+@Service("contentService")
 public class ContentServiceImpl implements ContentService {
 
     @Autowired

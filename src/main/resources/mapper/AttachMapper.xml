@@ -2,6 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.mysite.dao.AttachDao">
 
+    <resultMap id="AttachMap" type="com.mysite.model.entity.Attach">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="fname" jdbcType="VARCHAR" property="fname"/>
+        <result column="ftype" jdbcType="VARCHAR" property="ftype"/>
+        <result column="fkey" jdbcType="VARCHAR" property="fkey"/>
+        <result column="author_id" jdbcType="INTEGER" property="authorId"/>
+        <result column="created" jdbcType="INTEGER" property="created"/>
+    </resultMap>
+
+
     <sql id="BASE_TABLE">
         t_attach
     </sql>
@@ -78,7 +88,7 @@
     </update>
 
     <!-- 根据主键获取附件信息 -->
-    <select id="getAttachById" resultType="com.mysite.model.dto.AttachDto">
+    <select id="getAttachById" resultType="com.mysite.model.dto.AttachDto" resultMap="AttachMap">
         SELECT
         <trim suffix="" suffixOverrides=",">
             <include refid="BASE_COLUMN"/>
@@ -92,7 +102,7 @@
     </select>
 
     <!-- 查找所有的附件 -->
-    <select id="getAtts" resultType="com.mysite.model.dto.AttachDto">
+    <select id="getAtts" resultType="com.mysite.model.dto.AttachDto" resultMap="AttachMap">
         SELECT
         <trim suffix="" suffixOverrides=",">
             <include refid="BASE_COLUMN"/>

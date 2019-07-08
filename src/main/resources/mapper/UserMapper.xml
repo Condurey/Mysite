@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.mysite.dao.UserDao">
+    <resultMap id="UserMap" type="com.mysite.model.entity.User">
+        <id column="uid" jdbcType="INTEGER" property="uid"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="home_url" jdbcType="VARCHAR" property="homeUrl"/>
+        <result column="screen_name" jdbcType="VARCHAR" property="screenName"/>
+        <result column="created" jdbcType="INTEGER" property="created"/>
+        <result column="activated" jdbcType="INTEGER" property="activated"/>
+        <result column="logged" jdbcType="INTEGER" property="logged"/>
+        <result column="group_name" jdbcType="VARCHAR" property="groupName"/>
+    </resultMap>
+
     <sql id="BASE_TABLE">
         t_users
     </sql>
@@ -26,7 +39,7 @@
         WHERE uid = #{uid, jdbcType=INTEGER}
     </update>
 
-    <select id="getUserInfoById" resultType="com.mysite.model.entity.User">
+    <select id="getUserInfoById" resultMap="UserMap">
         SELECT
         <include refid="BASE_COLUMN"/>
         FROM
@@ -35,7 +48,7 @@
         uid = #{uid, jdbcType=INTEGER}
     </select>
 
-    <select id="getUserInfoByCond" resultType="com.mysite.model.entity.User">
+    <select id="getUserInfoByCond" resultMap="UserMap">
         SELECT
         <include refid="BASE_COLUMN"/>
         FROM

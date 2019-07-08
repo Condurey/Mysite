@@ -25,7 +25,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * 评论实现类
  * Created by Donghua.Chen on 2018/4/29.
  */
-@Service
+@Service("commentService")
 public class CommentServiceImpl implements CommentService {
 
     @Autowired

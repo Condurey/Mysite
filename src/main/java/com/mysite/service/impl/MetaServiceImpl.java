@@ -27,7 +27,7 @@ import java.util.Map;
 /**
  * Created by Donghua.Chen on 2018/4/29.
  */
-@Service
+@Service("metaService")
 public class MetaServiceImpl implements MetaService {
 
     @Autowired

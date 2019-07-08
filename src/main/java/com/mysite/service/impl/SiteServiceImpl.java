@@ -32,7 +32,7 @@ import java.util.Map;
  * 站点服务
  * Created by Donghua.Chen on 2018/4/30.
  */
-@Service
+@Service("siteService")
 public class SiteServiceImpl implements SiteService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SiteServiceImpl.class);

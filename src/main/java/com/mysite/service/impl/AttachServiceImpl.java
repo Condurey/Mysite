@@ -20,18 +20,18 @@ import java.util.List;
  * 附件服务实现层
  * Created by Donghua.Chen on 2018/4/29.
  */
-@Service
+@Service("attachService")
 public class AttachServiceImpl implements AttachService {
 
     @Autowired
-    private AttachDao attAchDao;
+    private AttachDao attachDao;
 
     @Override
     @CacheEvict(value = {"attCaches", "attCache"}, allEntries = true, beforeInvocation = true)
     public void addAttach(Attach attach) {
         if (null == attach)
             throw BusinessException.withErrorCode(ErrorConstant.Common.PARAM_IS_EMPTY);
-        attAchDao.addAttach(attach);
+        attachDao.addAttach(attach);
 
     }
 
@@ -40,7 +40,7 @@ public class AttachServiceImpl implements AttachService {
     public void batchAddAttach(List<Attach> list) {
         if (null == list || list.size() == 0)
             throw BusinessException.withErrorCode(ErrorConstant.Common.PARAM_IS_EMPTY);
-        attAchDao.batchAddAttach(list);
+        attachDao.batchAddAttach(list);
 
     }
 
@@ -49,7 +49,7 @@ public class AttachServiceImpl implements AttachService {
     public void deleteAttach(Integer id) {
         if (null == id)
             throw BusinessException.withErrorCode(ErrorConstant.Common.PARAM_IS_EMPTY);
-        attAchDao.deleteAttach(id);
+        attachDao.deleteAttach(id);
 
     }
 
@@ -58,23 +58,23 @@ public class AttachServiceImpl implements AttachService {
     public void updateAttach(Attach attach) {
         if (null == attach || null == attach.getId())
             throw BusinessException.withErrorCode(ErrorConstant.Common.PARAM_IS_EMPTY);
-        attAchDao.updateAttach(attach);
+        attachDao.updateAttach(attach);
 
     }
 
     @Override
-    @Cacheable(value = "attCache", key = "'attAchById' + #p0")
+    @Cacheable(value = "attCache", key = "'attachById' + #p0")
     public AttachDto getAttachById(Integer id) {
         if (null == id)
             throw BusinessException.withErrorCode(ErrorConstant.Common.PARAM_IS_EMPTY);
-        return attAchDao.getAttachById(id);
+        return attachDao.getAttachById(id);
     }
 
     @Override
     @Cacheable(value = "attCaches", key = "'atts' + #p0")
     public PageInfo<AttachDto> getAtts(int pageNum, int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        List<AttachDto> atts = attAchDao.getAtts();
+        List<AttachDto> atts = attachDao.getAtts();
         PageInfo<AttachDto> pageInfo = new PageInfo<>(atts);
         return pageInfo;
     }

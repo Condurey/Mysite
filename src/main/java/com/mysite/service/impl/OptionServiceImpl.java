@@ -19,7 +19,7 @@ import java.util.Map;
  * 网站配置服务层
  * Created by Donghua.Chen on 2018/4/28.
  */
-@Service
+@Service("optionService")
 public class OptionServiceImpl implements OptionService {
 
     @Autowired

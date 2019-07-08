@@ -2,6 +2,29 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.mysite.dao.ContentDao">
 
+    <resultMap id="ContentMap" type="com.mysite.model.entity.Content">
+        <id column="cid" jdbcType="INTEGER" property="cid"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="slug" jdbcType="VARCHAR" property="slug"/>
+        <result column="created" jdbcType="INTEGER" property="created"/>
+        <result column="modified" jdbcType="INTEGER" property="modified"/>
+        <result column="author_id" jdbcType="INTEGER" property="authorId"/>
+        <result column="type" jdbcType="VARCHAR" property="type"/>
+        <result column="status" jdbcType="VARCHAR" property="status"/>
+        <result column="tags" jdbcType="VARCHAR" property="tags"/>
+        <result column="categories" jdbcType="VARCHAR" property="categories"/>
+        <result column="hits" jdbcType="INTEGER" property="hits"/>
+        <result column="comments_num" jdbcType="INTEGER" property="commentsNum"/>
+        <result column="allow_comment" jdbcType="BIT" property="allowComment"/>
+        <result column="allow_ping" jdbcType="BIT" property="allowPing"/>
+        <result column="allow_feed" jdbcType="BIT" property="allowFeed"/>
+    </resultMap>
+
+    <resultMap id="ArchiveDtoMap" type="com.mysite.model.dto.ArchiveDto">
+        <id column="date" property="date"/>
+        <result column="count" property="count"/>
+    </resultMap>
+
     <sql id="BASE_TABLE">
       t_contents
     </sql>
@@ -65,7 +88,7 @@
             <if test="content != null">
                 content = #{content, jdbcType=LONGVARCHAR},
             </if>
-                modified = UNIX_TIMESTAMP(NOW()),
+            modified = UNIX_TIMESTAMP(NOW()),
             <if test="type != null">
                 type = #{type, jdbcType=VARCHAR},
             </if>
@@ -97,7 +120,7 @@
         WHERE cid = #{cid, jdbcType=INTEGER}
     </update>
 
-    <update id="updateArticleCommentCountById" >
+    <update id="updateArticleCommentCountById">
         UPDATE
         <include refid="BASE_TABLE"/>
         SET comments_num = #{commentsNum, jdbcType=INTEGER}
@@ -106,21 +129,22 @@
 
 
     <!-- 根据主键编号获取文章信息 -->
-    <select id="getArticleById" resultType="com.mysite.model.entity.Content">
+    <select id="getArticleById" resultMap="ContentMap">
         SELECT
         <include refid="BASE_COLUMN"/>
         FROM
-        <include refid="BASE_TABLE"/> AS c
+        <include refid="BASE_TABLE"/>
+        AS c
         WHERE c.cid = #{cid, jdbcType=INTEGER}
     </select>
 
     <!-- 根据条件查询文章 -->
-    <select id="getArticlesByCond" resultType="com.mysite.model.entity.Content"
-            parameterType="com.mysite.model.dto.cond.ContentCond">
+    <select id="getArticlesByCond" resultMap="ContentMap" parameterType="com.mysite.model.dto.cond.ContentCond">
         SELECT
         <include refid="BASE_COLUMN"/>
         FROM
-        <include refid="BASE_TABLE"/> AS c
+        <include refid="BASE_TABLE"/>
+        AS c
         <where>
             <if test="tag != null">
                 AND c.tags LIKE CONCAT('%',#{tag, jdbcType=VARCHAR},'%')
@@ -149,23 +173,21 @@
         </where>
         ORDER BY c.created DESC
     </select>
-    
+
     <select id="getArticleCount" resultType="java.lang.Long">
         SELECT count(*)
-        FROM <include refid="BASE_TABLE"/>
+        FROM
+        <include refid="BASE_TABLE"/>
     </select>
 
-    <resultMap id="archiveDtoMap" type="com.mysite.model.dto.ArchiveDto">
-        <id column="date" property="date"/>
-        <result column="count" property="count"/>
-    </resultMap>
 
-    <select id="getArchive" resultMap="archiveDtoMap"
+    <select id="getArchive" resultMap="ArchiveDtoMap"
             parameterType="com.mysite.model.dto.cond.ContentCond">
         select
-            FROM_UNIXTIME(created, '%Y年%m月') as date,
-            count(*)                         as count
-        from <include refid="BASE_TABLE"/>
+        FROM_UNIXTIME(created, '%Y年%m月') as date,
+        count(*) as count
+        from
+        <include refid="BASE_TABLE"/>
         <where>
             type = 'post'
             and status = 'publish'
@@ -180,20 +202,21 @@
         order by date desc
     </select>
 
-    <select id="getRecentlyArticle" resultType="com.mysite.model.entity.Content">
+    <select id="getRecentlyArticle" resultMap="ContentMap">
         SELECT
-            cid, title
+        cid, title
         FROM
         <include refid="BASE_TABLE"/>
         ORDER BY created DESC
     </select>
-    
+
     <!-- 模糊搜索 -->
-    <select id="searchArticle" resultType="com.mysite.model.entity.Content">
+    <select id="searchArticle" resultMap="ContentMap">
         SELECT
         <include refid="BASE_COLUMN"/>
         FROM
-        <include refid="BASE_TABLE"/> AS c
+        <include refid="BASE_TABLE"/>
+        AS c
         <where>
             c.title LIKE CONCAT('%',#{param, jdbcType=VARCHAR},'%')
             OR

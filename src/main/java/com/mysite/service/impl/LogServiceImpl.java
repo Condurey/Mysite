@@ -16,7 +16,7 @@ import java.util.List;
  * 请求日志
  * Created by Donghua.Chen on 2018/4/29.
  */
-@Service
+@Service("logService")
 public class LogServiceImpl implements LogService {
 
     @Autowired
@@ -24,12 +24,12 @@ public class LogServiceImpl implements LogService {
 
     @Override
     public void addLog(String action, String data, String ip, Integer authorId) {
-        Log logDomain = new Log();
-        logDomain.setAuthorId(authorId);
-        logDomain.setIp(ip);
-        logDomain.setData(data);
-        logDomain.setAction(action);
-        logDao.addLog(logDomain);
+        Log log = new Log();
+        log.setAuthorId(authorId);
+        log.setIp(ip);
+        log.setData(data);
+        log.setAction(action);
+        logDao.addLog(log);
     }
 
     @Override

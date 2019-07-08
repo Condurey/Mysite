@@ -11,8 +11,8 @@ import java.util.List;
 /**
  * Created by Donghua.Chen on 2018/4/30.
  */
-@Service
-public class RelationShipServiceImpl implements RelationshipService {
+@Service("relationshipService")
+public class RelationshipServiceImpl implements RelationshipService {
 
     @Autowired
     private RelationshipDao relationshipDao;
