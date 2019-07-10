@@ -3,7 +3,7 @@ package com.mysite.utils;
 
 import com.github.pagehelper.PageInfo;
 import com.mysite.constant.WebConst;
-import com.mysite.model.entity.Content;
+import com.mysite.model.po.Content;
 import com.vdurmont.emoji.EmojiParser;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;

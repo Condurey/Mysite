@@ -1,6 +1,6 @@
 package com.mysite.dao;
 
-import com.mysite.model.entity.Relationship;
+import com.mysite.model.po.Relationship;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mybatis.spring.boot.test.autoconfigure.AutoConfigureMybatis;

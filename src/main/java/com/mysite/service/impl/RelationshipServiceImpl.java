@@ -1,11 +1,11 @@
 package com.mysite.service.impl;
 
 import com.mysite.dao.RelationshipDao;
-import com.mysite.model.entity.Relationship;
+import com.mysite.model.po.Relationship;
 import com.mysite.service.RelationshipService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -14,7 +14,7 @@ import java.util.List;
 @Service("relationshipService")
 public class RelationshipServiceImpl implements RelationshipService {
 
-    @Autowired
+    @Resource
     private RelationshipDao relationshipDao;
 
     /**

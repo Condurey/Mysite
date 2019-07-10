@@ -1,5 +1,6 @@
 package com.mysite.service.impl;
 
+import com.mysite.model.po.Meta;
 import com.mysite.service.MetaService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,6 +41,8 @@ public class MetaServiceImplTest {
 
     @Test
     public void getMetaById() {
+        Meta meta = metaService.getMetaById(6);
+        System.out.println(meta);
     }
 
     @Test

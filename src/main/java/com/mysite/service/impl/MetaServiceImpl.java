@@ -4,15 +4,15 @@ import com.mysite.constant.ErrorConstant;
 import com.mysite.constant.Types;
 import com.mysite.constant.WebConst;
 import com.mysite.dao.MetaDao;
+import com.mysite.dao.RelationshipDao;
 import com.mysite.exception.BusinessException;
 import com.mysite.model.dto.MetaDto;
-import com.mysite.model.dto.cond.MetaCond;
-import com.mysite.model.entity.Content;
-import com.mysite.model.entity.Meta;
-import com.mysite.model.entity.Relationship;
+import com.mysite.model.po.Content;
+import com.mysite.model.po.Meta;
+import com.mysite.model.po.Relationship;
+import com.mysite.model.query.MetaQuery;
 import com.mysite.service.ContentService;
 import com.mysite.service.MetaService;
-import com.mysite.service.RelationshipService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -20,6 +20,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,11 +31,11 @@ import java.util.Map;
 @Service("metaService")
 public class MetaServiceImpl implements MetaService {
 
-    @Autowired
+    @Resource
     private MetaDao metaDao;
 
     @Autowired
-    private RelationshipService relationshipService;
+    private RelationshipDao relationshipDao;
 
 
     @Autowired
@@ -54,10 +55,10 @@ public class MetaServiceImpl implements MetaService {
     @CacheEvict(value = {"metaCaches", "metaCache"}, allEntries = true, beforeInvocation = true)
     public void saveMeta(String type, String name, Integer mid) {
         if (StringUtils.isNotBlank(type) && StringUtils.isNotBlank(name)) {
-            MetaCond metaCond = new MetaCond();
-            metaCond.setName(name);
-            metaCond.setType(type);
-            List<Meta> metas = metaDao.getMetasByCond(metaCond);
+            MetaQuery metaQuery = new MetaQuery();
+            metaQuery.setName(name);
+            metaQuery.setType(type);
+            List<Meta> metas = metaDao.getMetasByCond(metaQuery);
             if (null == metas || metas.size() == 0) {
                 Meta metaDomain = new Meta();
                 metaDomain.setName(name);
@@ -99,10 +100,10 @@ public class MetaServiceImpl implements MetaService {
     @Override
     @CacheEvict(value = {"metaCaches", "metaCache"}, allEntries = true, beforeInvocation = true)
     public void saveOrUpdate(Integer cid, String name, String type) {
-        MetaCond metaCond = new MetaCond();
-        metaCond.setName(name);
-        metaCond.setType(type);
-        List<Meta> metas = this.getMetas(metaCond);
+        MetaQuery metaQuery = new MetaQuery();
+        metaQuery.setName(name);
+        metaQuery.setType(type);
+        List<Meta> metas = this.getMetas(metaQuery);
 
         int mid;
         Meta metaDomain;
@@ -120,12 +121,12 @@ public class MetaServiceImpl implements MetaService {
             mid = metaDomain.getMid();
         }
         if (mid != 0) {
-            Long count = relationshipService.getCountById(cid, mid);
+            Long count = relationshipDao.getCountById(cid, mid);
             if (count == 0) {
                 Relationship relationship = new Relationship();
                 relationship.setCid(cid);
                 relationship.setMid(mid);
-                relationshipService.addRelationship(relationship);
+                relationshipDao.addRelationship(relationship);
             }
 
         }
@@ -144,7 +145,7 @@ public class MetaServiceImpl implements MetaService {
             String name = meta.getName();
             metaDao.deleteMetaById(mid);
             //需要把相关的数据删除
-            List<Relationship> relationships = relationshipService.getRelationshipByMid(mid);
+            List<Relationship> relationships = relationshipDao.getRelationshipByMid(mid);
             if (null != relationships && relationships.size() > 0) {
                 for (Relationship relationship : relationships) {
                     Content article = contentService.getAtricleById(relationship.getCid());
@@ -161,7 +162,7 @@ public class MetaServiceImpl implements MetaService {
                         contentService.updateArticleById(temp);
                     }
                 }
-                relationshipService.deleteRelationshipByMid(mid);
+                relationshipDao.deleteRelationshipByMid(mid);
             }
         }
 
@@ -188,8 +189,8 @@ public class MetaServiceImpl implements MetaService {
 
     @Override
     @Cacheable(value = "metaCaches", key = "'metas_' + #p0")
-    public List<Meta> getMetas(MetaCond metaCond) {
-        return metaDao.getMetasByCond(metaCond);
+    public List<Meta> getMetas(MetaQuery metaQuery) {
+        return metaDao.getMetasByCond(metaQuery);
     }
 
 

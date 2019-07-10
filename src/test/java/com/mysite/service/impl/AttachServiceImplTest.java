@@ -1,5 +1,7 @@
 package com.mysite.service.impl;
 
+import com.github.pagehelper.PageInfo;
+import com.mysite.model.dto.AttachDto;
 import com.mysite.service.AttachService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,9 +34,14 @@ public class AttachServiceImplTest {
 
     @Test
     public void getAttachById() {
+        AttachDto attachDto = attachService.getAttachById(1);
+        System.out.println(attachDto);
+
     }
 
     @Test
     public void getAtts() {
+        PageInfo<AttachDto> attachDtoPageInfo = attachService.getAtts(10, 10);
+        System.out.println(attachDtoPageInfo);
     }
 }

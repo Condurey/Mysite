@@ -1,4 +1,4 @@
-package com.mysite.model.dto.cond;
+package com.mysite.model.query;
 
 import lombok.Data;
 
@@ -7,7 +7,7 @@ import lombok.Data;
  * Created by Donghua.Chen on 2018/4/30.
  */
 @Data
-public class MetaCond {
+public class MetaQuery {
 
     /**
      * meta Name

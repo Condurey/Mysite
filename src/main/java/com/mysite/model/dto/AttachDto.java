@@ -33,4 +33,16 @@ public class AttachDto extends BaseDto {
      */
     private Integer created;
 
+    @Override
+    public String toString() {
+        return "AttachDto{" +
+                "id=" + id +
+                ", userName=" + this.getUserName() +
+                ", fname=" + fname +
+                ", ftype=" + ftype +
+                ", authorId=" + authorId +
+                ", created=" + created +
+                '}';
+    }
+
 }

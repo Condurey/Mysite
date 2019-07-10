@@ -1,6 +1,6 @@
 package com.mysite.model.dto;
 
-import com.mysite.model.entity.Meta;
+import com.mysite.model.po.Meta;
 import lombok.Data;
 
 /**

@@ -1,5 +1,6 @@
 package com.mysite.service.impl;
 
+import com.mysite.model.po.Option;
 import com.mysite.service.OptionService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,6 +29,8 @@ public class OptionServiceImplTest {
 
     @Test
     public void getOptionByName() {
+        Option option = optionService.getOptionByName("site_theme");
+        System.out.println(option);
     }
 
     @Test

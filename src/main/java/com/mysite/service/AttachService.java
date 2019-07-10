@@ -2,7 +2,7 @@ package com.mysite.service;
 
 import com.github.pagehelper.PageInfo;
 import com.mysite.model.dto.AttachDto;
-import com.mysite.model.entity.Attach;
+import com.mysite.model.po.Attach;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
 package com.mysite.dao;
 
-import com.mysite.model.entity.Log;
+import com.mysite.model.po.Log;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

@@ -1,6 +1,6 @@
 package com.mysite.service.impl;
 
-import com.mysite.model.entity.User;
+import com.mysite.model.po.User;
 import com.mysite.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;

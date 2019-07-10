@@ -1,7 +1,7 @@
 package com.mysite.model.bo;
 
 
-import com.mysite.model.entity.Comment;
+import com.mysite.model.po.Comment;
 import lombok.Data;
 
 import java.util.List;

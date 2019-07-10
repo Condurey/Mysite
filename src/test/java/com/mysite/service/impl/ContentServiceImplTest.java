@@ -1,6 +1,6 @@
 package com.mysite.service.impl;
 
-import com.mysite.model.entity.Content;
+import com.mysite.model.po.Content;
 import com.mysite.service.ContentService;
 import org.junit.Test;
 import org.junit.runner.RunWith;

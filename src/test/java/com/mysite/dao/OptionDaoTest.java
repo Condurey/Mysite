@@ -1,6 +1,6 @@
 package com.mysite.dao;
 
-import com.mysite.model.entity.Option;
+import com.mysite.model.po.Option;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mybatis.spring.boot.test.autoconfigure.AutoConfigureMybatis;

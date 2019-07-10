@@ -1,8 +1,8 @@
 package com.mysite.dao;
 
 import com.mysite.model.dto.MetaDto;
-import com.mysite.model.dto.cond.MetaCond;
-import com.mysite.model.entity.Meta;
+import com.mysite.model.po.Meta;
+import com.mysite.model.query.MetaQuery;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -52,10 +52,10 @@ public interface MetaDao {
     /**
      * 根据条件查询
      *
-     * @param metaCond
+     * @param metaQuery
      * @return
      */
-    List<Meta> getMetasByCond(MetaCond metaCond);
+    List<Meta> getMetasByCond(MetaQuery metaQuery);
 
     /**
      * 根据类型获取meta数量

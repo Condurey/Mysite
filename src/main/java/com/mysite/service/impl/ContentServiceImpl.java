@@ -7,14 +7,14 @@ import com.mysite.constant.Types;
 import com.mysite.constant.WebConst;
 import com.mysite.dao.CommentDao;
 import com.mysite.dao.ContentDao;
+import com.mysite.dao.RelationshipDao;
 import com.mysite.exception.BusinessException;
-import com.mysite.model.dto.cond.ContentCond;
-import com.mysite.model.entity.Comment;
-import com.mysite.model.entity.Content;
-import com.mysite.model.entity.Relationship;
+import com.mysite.model.po.Comment;
+import com.mysite.model.po.Content;
+import com.mysite.model.po.Relationship;
+import com.mysite.model.query.ContentQuery;
 import com.mysite.service.ContentService;
 import com.mysite.service.MetaService;
-import com.mysite.service.RelationshipService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -22,6 +22,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -30,17 +31,17 @@ import java.util.List;
 @Service("contentService")
 public class ContentServiceImpl implements ContentService {
 
-    @Autowired
+    @Resource
     private ContentDao contentDao;
 
-    @Autowired
+    @Resource
     private CommentDao commentDao;
 
     @Autowired
     private MetaService metaService;
 
     @Autowired
-    private RelationshipService relationshipService;
+    private RelationshipDao relationshipDao;
 
 
     @Transactional
@@ -84,9 +85,9 @@ public class ContentServiceImpl implements ContentService {
             });
         }
         //删除标签和分类关联
-        List<Relationship> relationships = relationshipService.getRelationshipByCid(cid);
+        List<Relationship> relationships = relationshipDao.getRelationshipByCid(cid);
         if (null != relationships && relationships.size() > 0) {
-            relationshipService.deleteRelationshipByCid(cid);
+            relationshipDao.deleteRelationshipByCid(cid);
         }
 
     }
@@ -101,7 +102,7 @@ public class ContentServiceImpl implements ContentService {
 
         contentDao.updateArticleById(contentDomain);
         int cid = contentDomain.getCid();
-        relationshipService.deleteRelationshipByCid(cid);
+        relationshipDao.deleteRelationshipByCid(cid);
         metaService.addMetas(cid, tags, Types.TAG.getType());
         metaService.addMetas(cid, categories, Types.CATEGORY.getType());
 
@@ -111,7 +112,7 @@ public class ContentServiceImpl implements ContentService {
     @Transactional
     @CacheEvict(value = {"atricleCache", "atricleCaches"}, allEntries = true, beforeInvocation = true)
     public void updateCategory(String ordinal, String newCatefory) {
-        ContentCond cond = new ContentCond();
+        ContentQuery cond = new ContentQuery();
         cond.setCategory(ordinal);
         List<Content> atricles = contentDao.getArticlesByCond(cond);
         atricles.forEach(atricle -> {
@@ -139,11 +140,11 @@ public class ContentServiceImpl implements ContentService {
 
     @Override
     @Cacheable(value = "atricleCaches", key = "'articlesByCond_' + #p1 + 'type_' + #p0.type")
-    public PageInfo<Content> getArticlesByCond(ContentCond contentCond, int pageNum, int pageSize) {
-        if (null == contentCond)
+    public PageInfo<Content> getArticlesByCond(ContentQuery contentQuery, int pageNum, int pageSize) {
+        if (null == contentQuery)
             throw BusinessException.withErrorCode(ErrorConstant.Common.PARAM_IS_EMPTY);
         PageHelper.startPage(pageNum, pageSize);
-        List<Content> contents = contentDao.getArticlesByCond(contentCond);
+        List<Content> contents = contentDao.getArticlesByCond(contentQuery);
         PageInfo<Content> pageInfo = new PageInfo<>(contents);
         return pageInfo;
     }

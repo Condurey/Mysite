@@ -1,6 +1,6 @@
 package com.mysite.service;
 
-import com.mysite.model.entity.Option;
+import com.mysite.model.po.Option;
 
 import java.util.List;
 import java.util.Map;

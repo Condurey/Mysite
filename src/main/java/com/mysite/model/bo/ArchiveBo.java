@@ -1,6 +1,6 @@
 package com.mysite.model.bo;
 
-import com.mysite.model.entity.Content;
+import com.mysite.model.po.Content;
 import lombok.Data;
 
 import java.io.Serializable;

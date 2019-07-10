@@ -3,9 +3,9 @@ package com.mysite.service;
 import com.mysite.model.dto.ArchiveDto;
 import com.mysite.model.dto.MetaDto;
 import com.mysite.model.dto.StatisticsDto;
-import com.mysite.model.dto.cond.ContentCond;
-import com.mysite.model.entity.Comment;
-import com.mysite.model.entity.Content;
+import com.mysite.model.po.Comment;
+import com.mysite.model.po.Content;
+import com.mysite.model.query.ContentQuery;
 
 import java.util.List;
 
@@ -49,18 +49,18 @@ public interface SiteService {
     /**
      * 获取归档列表 - 只是获取日期和数量
      *
-     * @param contentCond
+     * @param contentQuery
      * @return
      */
-    List<ArchiveDto> getArchivesSimple(ContentCond contentCond);
+    List<ArchiveDto> getArchivesSimple(ContentQuery contentQuery);
 
     /**
      * 获取归档列表
      *
-     * @param contentCond 查询条件（只包含开始时间和结束时间）
+     * @param contentQuery 查询条件（只包含开始时间和结束时间）
      * @return
      */
-    List<ArchiveDto> getArchives(ContentCond contentCond);
+    List<ArchiveDto> getArchives(ContentQuery contentQuery);
 
 
     /**

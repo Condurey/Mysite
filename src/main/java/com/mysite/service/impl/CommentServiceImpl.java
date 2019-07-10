@@ -5,9 +5,9 @@ import com.github.pagehelper.PageInfo;
 import com.mysite.constant.ErrorConstant;
 import com.mysite.dao.CommentDao;
 import com.mysite.exception.BusinessException;
-import com.mysite.model.dto.cond.CommentCond;
-import com.mysite.model.entity.Comment;
-import com.mysite.model.entity.Content;
+import com.mysite.model.po.Comment;
+import com.mysite.model.po.Content;
+import com.mysite.model.query.CommentQuery;
 import com.mysite.service.CommentService;
 import com.mysite.service.ContentService;
 import org.apache.commons.lang3.StringUtils;
@@ -17,9 +17,8 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 评论实现类
@@ -28,14 +27,12 @@ import java.util.concurrent.ConcurrentHashMap;
 @Service("commentService")
 public class CommentServiceImpl implements CommentService {
 
-    @Autowired
+    @Resource
     private CommentDao commentDao;
 
     @Autowired
     private ContentService contentService;
 
-
-    private static final Map<String, String> STATUS_MAP = new ConcurrentHashMap<>();
 
     /**
      * 评论状态：正常
@@ -45,11 +42,6 @@ public class CommentServiceImpl implements CommentService {
      * 评论状态：不显示
      */
     private static final String STATUS_BLANK = "not_audit";
-
-    static {
-        STATUS_MAP.put("approved", STATUS_NORMAL);
-        STATUS_MAP.put("not_audit", STATUS_BLANK);
-    }
 
     @Override
     @Transactional
@@ -75,13 +67,15 @@ public class CommentServiceImpl implements CommentService {
         if (null == Comment.getCid()) {
             msg = "评论文章不能为空";
         }
+
         if (msg != null)
             throw BusinessException.withErrorCode(msg);
+
         Content atricle = contentService.getAtricleById(Comment.getCid());
         if (null == atricle)
             throw BusinessException.withErrorCode("该文章不存在");
         Comment.setOwnerId(atricle.getAuthorId());
-        Comment.setStatus(STATUS_MAP.get(STATUS_BLANK));
+        Comment.setStatus(STATUS_BLANK);
 //        Comment.setCreated(DateKit.getCurrentUnixTime());
         commentDao.addComment(Comment);
 
@@ -104,10 +98,10 @@ public class CommentServiceImpl implements CommentService {
             throw BusinessException.withErrorCode(ErrorConstant.Common.PARAM_IS_EMPTY);
         // 如果删除的评论存在子评论，一并删除
         //查找当前评论是否有子评论
-        CommentCond commentCond = new CommentCond();
-        commentCond.setParent(coid);
+        CommentQuery commentQuery = new CommentQuery();
+        commentQuery.setParent(coid);
         Comment comment = commentDao.getCommentById(coid);
-        List<Comment> childComments = commentDao.getCommentsByCond(commentCond);
+        List<Comment> childComments = commentDao.getCommentsByCond(commentQuery);
         Integer count = 0;
         //删除子评论
         if (null != childComments && childComments.size() > 0) {
@@ -157,11 +151,11 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Cacheable(value = "commentCache", key = "'commentsByCond_' + #p1")
-    public PageInfo<Comment> getCommentsByCond(CommentCond commentCond, int pageNum, int pageSize) {
-        if (null == commentCond)
+    public PageInfo<Comment> getCommentsByCond(CommentQuery commentQuery, int pageNum, int pageSize) {
+        if (null == commentQuery)
             throw BusinessException.withErrorCode(ErrorConstant.Common.PARAM_IS_EMPTY);
         PageHelper.startPage(pageNum, pageSize);
-        List<Comment> comments = commentDao.getCommentsByCond(commentCond);
+        List<Comment> comments = commentDao.getCommentsByCond(commentQuery);
         PageInfo<Comment> pageInfo = new PageInfo<>(comments);
         return pageInfo;
     }

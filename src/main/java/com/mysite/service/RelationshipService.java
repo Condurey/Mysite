@@ -1,6 +1,6 @@
 package com.mysite.service;
 
-import com.mysite.model.entity.Relationship;
+import com.mysite.model.po.Relationship;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

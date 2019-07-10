@@ -1,6 +1,6 @@
 package com.mysite.service;
 
-import com.mysite.model.entity.User;
+import com.mysite.model.po.User;
 import org.springframework.stereotype.Service;
 
 /**

@@ -16,7 +16,7 @@
     </sql>
 
     <!-- 添加项目信息 -->
-    <insert id="addMeta" parameterType="com.mysite.model.entity.Meta" useGeneratedKeys="true" keyProperty="mid">
+    <insert id="addMeta" parameterType="com.mysite.model.po.Meta" useGeneratedKeys="true" keyProperty="mid">
         INSERT INTO
         <include refid="BASE_TABLE"/>
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -36,7 +36,7 @@
     </delete>
 
     <!-- 更新项目 -->
-    <update id="updateMeta" parameterType="com.mysite.model.entity.Meta">
+    <update id="updateMeta" parameterType="com.mysite.model.po.Meta">
         UPDATE
         <include refid="BASE_TABLE"/>
         <set>
@@ -63,7 +63,7 @@
     </update>
 
     <!-- 根据主键编号获取项目 -->
-    <select id="getMetaById" resultType="com.mysite.model.entity.Meta">
+    <select id="getMetaById" resultType="com.mysite.model.po.Meta">
         SELECT
         <include refid="BASE_COLUMN"/>
         FROM
@@ -72,8 +72,8 @@
     </select>
 
     <!-- 根据条件获取项目 -->
-    <select id="getMetasByCond" resultType="com.mysite.model.entity.Meta"
-            parameterType="com.mysite.model.dto.cond.MetaCond">
+    <select id="getMetasByCond" resultType="com.mysite.model.po.Meta"
+            parameterType="com.mysite.model.query.MetaQuery">
         SELECT
         <include refid="BASE_COLUMN"/>
         FROM
@@ -96,7 +96,7 @@
         WHERE type = #{type, jdbcType=VARCHAR}
     </select>
 
-    <resultMap id="BaseResultMap" type="com.mysite.model.entity.Meta">
+    <resultMap id="BaseResultMap" type="com.mysite.model.po.Meta">
         <id column="mid" jdbcType="INTEGER" property="mid" />
         <result column="name" jdbcType="VARCHAR" property="name" />
         <result column="slug" jdbcType="VARCHAR" property="slug" />

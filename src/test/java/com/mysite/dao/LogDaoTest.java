@@ -1,12 +1,13 @@
 package com.mysite.dao;
 
-import com.mysite.model.entity.Log;
+import com.mysite.model.po.Log;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mybatis.spring.boot.test.autoconfigure.AutoConfigureMybatis;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,6 +18,13 @@ public class LogDaoTest {
 
     @Autowired
     private LogDao logDao;
+
+    @Test
+    @Transactional
+    public void deleteLogById() {
+        int count = logDao.deleteLogById(29);
+        System.out.println(count);
+    }
 
     @Test
     public void testGetLogs() {

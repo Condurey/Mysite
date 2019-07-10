@@ -1,4 +1,4 @@
-package com.mysite.model.entity;
+package com.mysite.model.po;
 
 import lombok.Data;
 

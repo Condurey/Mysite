@@ -1,8 +1,8 @@
 package com.mysite.service;
 
 import com.github.pagehelper.PageInfo;
-import com.mysite.model.dto.cond.ContentCond;
-import com.mysite.model.entity.Content;
+import com.mysite.model.po.Content;
+import com.mysite.model.query.ContentQuery;
 
 /**
  * 文章服务层
@@ -61,10 +61,10 @@ public interface ContentService {
     /**
      * 根据条件获取文章列表
      *
-     * @param contentCond
+     * @param contentQuery
      * @return
      */
-    PageInfo<Content> getArticlesByCond(ContentCond contentCond, int pageNum, int pageSize);
+    PageInfo<Content> getArticlesByCond(ContentQuery contentQuery, int pageNum, int pageSize);
 
     /**
      * 获取最近的文章（只包含id和title）

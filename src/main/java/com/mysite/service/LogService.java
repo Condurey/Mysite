@@ -1,7 +1,7 @@
 package com.mysite.service;
 
 import com.github.pagehelper.PageInfo;
-import com.mysite.model.entity.Log;
+import com.mysite.model.po.Log;
 
 /**
  * 用户请求日志

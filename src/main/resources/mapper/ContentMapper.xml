@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.mysite.dao.ContentDao">
 
-    <resultMap id="ContentMap" type="com.mysite.model.entity.Content">
+    <resultMap id="ContentMap" type="com.mysite.model.po.Content">
         <id column="cid" jdbcType="INTEGER" property="cid"/>
         <result column="title" jdbcType="VARCHAR" property="title"/>
         <result column="slug" jdbcType="VARCHAR" property="slug"/>
@@ -47,7 +47,7 @@
     </sql>
 
     <!-- 添加文章 -->
-    <insert id="addArticle" parameterType="com.mysite.model.entity.Content" useGeneratedKeys="true" keyProperty="cid">
+    <insert id="addArticle" parameterType="com.mysite.model.po.Content" useGeneratedKeys="true" keyProperty="cid">
         INSERT INTO
         <include refid="BASE_TABLE"/>
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -72,7 +72,7 @@
     </delete>
 
     <!-- 更新文章信息 -->
-    <update id="updateArticleById" parameterType="com.mysite.model.entity.Content">
+    <update id="updateArticleById" parameterType="com.mysite.model.po.Content">
         UPDATE
         <include refid="BASE_TABLE"/>
         <set>
@@ -139,7 +139,7 @@
     </select>
 
     <!-- 根据条件查询文章 -->
-    <select id="getArticlesByCond" resultMap="ContentMap" parameterType="com.mysite.model.dto.cond.ContentCond">
+    <select id="getArticlesByCond" resultMap="ContentMap" parameterType="com.mysite.model.query.ContentQuery">
         SELECT
         <include refid="BASE_COLUMN"/>
         FROM
@@ -182,7 +182,7 @@
 
 
     <select id="getArchive" resultMap="ArchiveDtoMap"
-            parameterType="com.mysite.model.dto.cond.ContentCond">
+            parameterType="com.mysite.model.query.ContentQuery">
         select
         FROM_UNIXTIME(created, '%Y年%m月') as date,
         count(*) as count

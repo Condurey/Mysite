@@ -1,8 +1,8 @@
 package com.mysite.service;
 
 import com.github.pagehelper.PageInfo;
-import com.mysite.model.dto.cond.CommentCond;
-import com.mysite.model.entity.Comment;
+import com.mysite.model.po.Comment;
+import com.mysite.model.query.CommentQuery;
 
 import java.util.List;
 
@@ -57,10 +57,10 @@ public interface CommentService {
     /**
      * 根据条件获取评论列表
      *
-     * @param commentCond 查询条件
+     * @param commentQuery 查询条件
      * @param pageNum     分页参数 第几页
      * @param pageSize    分页参数 每页条数
      * @return
      */
-    PageInfo<Comment> getCommentsByCond(CommentCond commentCond, int pageNum, int pageSize);
+    PageInfo<Comment> getCommentsByCond(CommentQuery commentQuery, int pageNum, int pageSize);
 }

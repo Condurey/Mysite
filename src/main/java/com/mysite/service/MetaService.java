@@ -1,8 +1,8 @@
 package com.mysite.service;
 
 import com.mysite.model.dto.MetaDto;
-import com.mysite.model.dto.cond.MetaCond;
-import com.mysite.model.entity.Meta;
+import com.mysite.model.po.Meta;
+import com.mysite.model.query.MetaQuery;
 
 import java.util.List;
 
@@ -75,10 +75,10 @@ public interface MetaService {
     /**
      * 获取所有的项目
      *
-     * @param metaCond 查询条件
+     * @param metaQuery 查询条件
      * @return
      */
-    List<Meta> getMetas(MetaCond metaCond);
+    List<Meta> getMetas(MetaQuery metaQuery);
 
     /**
      * 根据类型查询项目列表，带项目下面的文章数

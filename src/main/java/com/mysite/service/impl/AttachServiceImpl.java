@@ -7,13 +7,13 @@ import com.mysite.constant.ErrorConstant;
 import com.mysite.dao.AttachDao;
 import com.mysite.exception.BusinessException;
 import com.mysite.model.dto.AttachDto;
-import com.mysite.model.entity.Attach;
+import com.mysite.model.po.Attach;
 import com.mysite.service.AttachService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -23,7 +23,7 @@ import java.util.List;
 @Service("attachService")
 public class AttachServiceImpl implements AttachService {
 
-    @Autowired
+    @Resource
     private AttachDao attachDao;
 
     @Override

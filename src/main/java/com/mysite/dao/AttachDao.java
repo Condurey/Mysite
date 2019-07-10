@@ -1,7 +1,7 @@
 package com.mysite.dao;
 
 import com.mysite.model.dto.AttachDto;
-import com.mysite.model.entity.Attach;
+import com.mysite.model.po.Attach;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

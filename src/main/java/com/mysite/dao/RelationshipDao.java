@@ -1,6 +1,6 @@
 package com.mysite.dao;
 
-import com.mysite.model.entity.Relationship;
+import com.mysite.model.po.Relationship;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

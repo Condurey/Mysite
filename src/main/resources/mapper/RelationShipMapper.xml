@@ -10,7 +10,7 @@
         rs.cid, rs.mid
     </sql>
 
-    <insert id="addRelationship" parameterType="com.mysite.model.entity.Relationship">
+    <insert id="addRelationship" parameterType="com.mysite.model.po.Relationship">
         INSERT INTO
         <include refid="BASE_TABLE"/>
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -44,7 +44,7 @@
     </delete>
 
     <!--更新meta-->
-    <update id="updateRelationship" parameterType="com.mysite.model.entity.Relationship">
+    <update id="updateRelationship" parameterType="com.mysite.model.po.Relationship">
         UPDATE
         <include refid="BASE_TABLE"/>
         <set>
@@ -54,7 +54,7 @@
     </update>
 
     <!-- 根据文章编号获取对应的标签或分类 -->
-    <select id="getRelationshipByCid" resultType="com.mysite.model.entity.Relationship">
+    <select id="getRelationshipByCid" resultType="com.mysite.model.po.Relationship">
         SELECT
         <include refid="BASE_COLUMN"/>
         FROM <include refid="BASE_TABLE"/> AS rs
@@ -62,7 +62,7 @@
     </select>
 
     <!-- 根据meta编号获取对应的标签或分类 -->
-    <select id="getRelationshipByMid" resultType="com.mysite.model.entity.Relationship">
+    <select id="getRelationshipByMid" resultType="com.mysite.model.po.Relationship">
         SELECT
         <include refid="BASE_COLUMN"/>
         FROM <include refid="BASE_TABLE"/> AS rs

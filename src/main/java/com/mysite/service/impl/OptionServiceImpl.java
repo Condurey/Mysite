@@ -3,15 +3,15 @@ package com.mysite.service.impl;
 import com.mysite.constant.ErrorConstant;
 import com.mysite.dao.OptionDao;
 import com.mysite.exception.BusinessException;
-import com.mysite.model.entity.Option;
+import com.mysite.model.po.Option;
 import com.mysite.service.OptionService;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +22,7 @@ import java.util.Map;
 @Service("optionService")
 public class OptionServiceImpl implements OptionService {
 
-    @Autowired
+    @Resource
     private OptionDao optionDao;
 
     @Override

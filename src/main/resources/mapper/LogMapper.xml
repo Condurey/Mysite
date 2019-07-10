@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.mysite.dao.LogDao">
 
-    <resultMap id="LogMap" type="com.mysite.model.entity.Log">
+    <resultMap id="LogMap" type="com.mysite.model.po.Log">
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="action" jdbcType="VARCHAR" property="action"/>
         <result column="data" jdbcType="VARCHAR" property="data"/>
@@ -21,7 +21,7 @@
     </sql>
 
     <!-- 新增日志记录 -->
-    <insert id="addLog" parameterType="com.mysite.model.entity.Log">
+    <insert id="addLog" parameterType="com.mysite.model.po.Log">
         INSERT INTO
         <include refid="BASE_TABLE"/>
         <trim prefix="(" suffix=")" suffixOverrides=",">

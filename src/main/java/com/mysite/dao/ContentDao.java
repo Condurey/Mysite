@@ -1,8 +1,8 @@
 package com.mysite.dao;
 
 import com.mysite.model.dto.ArchiveDto;
-import com.mysite.model.dto.cond.ContentCond;
-import com.mysite.model.entity.Content;
+import com.mysite.model.po.Content;
+import com.mysite.model.query.ContentQuery;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -60,10 +60,10 @@ public interface ContentDao {
     /**
      * 根据条件获取文章列表
      *
-     * @param contentCond
+     * @param contentQuery
      * @return
      */
-    List<Content> getArticlesByCond(ContentCond contentCond);
+    List<Content> getArticlesByCond(ContentQuery contentQuery);
 
     /**
      * 获取文章总数量
@@ -75,10 +75,10 @@ public interface ContentDao {
     /**
      * 获取归档数据
      *
-     * @param contentCond 查询条件（只包含开始时间和结束时间）
+     * @param contentQuery 查询条件（只包含开始时间和结束时间）
      * @return
      */
-    List<ArchiveDto> getArchive(ContentCond contentCond);
+    List<ArchiveDto> getArchive(ContentQuery contentQuery);
 
     /**
      * 获取最近的文章（只包含id和title）

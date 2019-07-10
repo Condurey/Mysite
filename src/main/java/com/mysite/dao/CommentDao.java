@@ -1,7 +1,7 @@
 package com.mysite.dao;
 
-import com.mysite.model.dto.cond.CommentCond;
-import com.mysite.model.entity.Comment;
+import com.mysite.model.po.Comment;
+import com.mysite.model.query.CommentQuery;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -57,10 +57,10 @@ public interface CommentDao {
     /**
      * 根据条件获取评论列表
      *
-     * @param commentCond
+     * @param commentQuery
      * @return
      */
-    List<Comment> getCommentsByCond(CommentCond commentCond);
+    List<Comment> getCommentsByCond(CommentQuery commentQuery);
 
     /**
      * 获取文章数量

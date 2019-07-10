@@ -3,12 +3,13 @@ package com.mysite.service.impl;
 import com.mysite.constant.ErrorConstant;
 import com.mysite.dao.UserDao;
 import com.mysite.exception.BusinessException;
-import com.mysite.model.entity.User;
+import com.mysite.model.po.User;
 import com.mysite.service.UserService;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
 
 /**
  * Created by Donghua.Chen on 2018/4/20.
@@ -16,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service("userService")
 public class UserServiceImpl implements UserService {
 
-    @Autowired
+    @Resource
     private UserDao userDao;//这里会报错，但是并不会影响
 
 

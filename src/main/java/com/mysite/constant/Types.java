@@ -31,15 +31,15 @@ public enum Types {
 
     private String type;
 
+    Types(String type) {
+        this.type = type;
+    }
+
     public String getType() {
         return type;
     }
 
     public void setType(String type) {
-        this.type = type;
-    }
-
-    Types(String type) {
         this.type = type;
     }
 }

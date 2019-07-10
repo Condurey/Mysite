@@ -12,18 +12,18 @@ import com.mysite.exception.BusinessException;
 import com.mysite.model.dto.ArchiveDto;
 import com.mysite.model.dto.MetaDto;
 import com.mysite.model.dto.StatisticsDto;
-import com.mysite.model.dto.cond.CommentCond;
-import com.mysite.model.dto.cond.ContentCond;
-import com.mysite.model.entity.Comment;
-import com.mysite.model.entity.Content;
+import com.mysite.model.po.Comment;
+import com.mysite.model.po.Content;
+import com.mysite.model.query.CommentQuery;
+import com.mysite.model.query.ContentQuery;
 import com.mysite.service.SiteService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,16 +37,16 @@ public class SiteServiceImpl implements SiteService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SiteServiceImpl.class);
 
-    @Autowired
+    @Resource
     private CommentDao commentDao;
 
-    @Autowired
+    @Resource
     private ContentDao contentDao;
 
-    @Autowired
+    @Resource
     private MetaDao metaDao;
 
-    @Autowired
+    @Resource
     private AttachDao attachDao;
 
     @Override
@@ -57,7 +57,7 @@ public class SiteServiceImpl implements SiteService {
             limit = 10;
         }
         PageHelper.startPage(1, limit);
-        List<Comment> rs = commentDao.getCommentsByCond(new CommentCond());
+        List<Comment> rs = commentDao.getCommentsByCond(new CommentQuery());
         LOGGER.debug("Exit recentComments method");
         return rs;
     }
@@ -69,7 +69,7 @@ public class SiteServiceImpl implements SiteService {
         if (limit < 0 || limit > 10)
             limit = 10;
         PageHelper.startPage(1, limit);
-        List<Content> rs = contentDao.getArticlesByCond(new ContentCond());
+        List<Content> rs = contentDao.getArticlesByCond(new ContentQuery());
         LOGGER.debug("Exit recentArticles method");
         return rs;
     }
@@ -110,35 +110,35 @@ public class SiteServiceImpl implements SiteService {
 
     @Override
     @Cacheable(value = "siteCache", key = "'archivesSimple_' + #p0")
-    public List<ArchiveDto> getArchivesSimple(ContentCond contentCond) {
+    public List<ArchiveDto> getArchivesSimple(ContentQuery contentQuery) {
         LOGGER.debug("Enter getArchives method");
-        List<ArchiveDto> archives = contentDao.getArchive(contentCond);
+        List<ArchiveDto> archives = contentDao.getArchive(contentQuery);
         LOGGER.debug("Exit getArchives method");
         return archives;
     }
 
     @Override
     @Cacheable(value = "siteCache", key = "'archives_' + #p0")
-    public List<ArchiveDto> getArchives(ContentCond contentCond) {
+    public List<ArchiveDto> getArchives(ContentQuery contentQuery) {
         LOGGER.debug("Enter getArchives method");
-        List<ArchiveDto> archives = contentDao.getArchive(contentCond);
-        parseArchives(archives, contentCond);
+        List<ArchiveDto> archives = contentDao.getArchive(contentQuery);
+        parseArchives(archives, contentQuery);
         LOGGER.debug("Exit getArchives method");
         return archives;
     }
 
 
-    private void parseArchives(List<ArchiveDto> archives, ContentCond contentCond) {
+    private void parseArchives(List<ArchiveDto> archives, ContentQuery contentQuery) {
         if (null != archives) {
             archives.forEach(archive -> {
                 String date = archive.getDate();
 //                Date sd = DateKit.dateFormat(date, "yyyy年MM月");
 //                int start = DateKit.getUnixTimeByDate(sd);
 //                int end = DateKit.getUnixTimeByDate(DateKit.dateAdd(DateKit.INTERVAL_MONTH, sd, 1)) - 1;
-                ContentCond cond = new ContentCond();
+                ContentQuery cond = new ContentQuery();
 //                cond.setStartTime(start);
 //                cond.setEndTime(end);
-                cond.setType(contentCond.getType());
+                cond.setType(contentQuery.getType());
                 List<Content> contentss = contentDao.getArticlesByCond(cond);
                 archive.setArticles(contentss);
             });

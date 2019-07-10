@@ -5,11 +5,11 @@ import com.github.pagehelper.PageInfo;
 import com.mysite.constant.ErrorConstant;
 import com.mysite.dao.LogDao;
 import com.mysite.exception.BusinessException;
-import com.mysite.model.entity.Log;
+import com.mysite.model.po.Log;
 import com.mysite.service.LogService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -19,7 +19,7 @@ import java.util.List;
 @Service("logService")
 public class LogServiceImpl implements LogService {
 
-    @Autowired
+    @Resource
     private LogDao logDao;
 
     @Override

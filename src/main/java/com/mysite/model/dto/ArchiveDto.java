@@ -1,7 +1,7 @@
 package com.mysite.model.dto;
 
 
-import com.mysite.model.entity.Content;
+import com.mysite.model.po.Content;
 import lombok.Data;
 
 import java.util.List;
