@@ -60,19 +60,19 @@ public class MetaServiceImpl implements MetaService {
             metaQuery.setType(type);
             List<Meta> metas = metaDao.getMetasByCond(metaQuery);
             if (null == metas || metas.size() == 0) {
-                Meta metaDomain = new Meta();
-                metaDomain.setName(name);
+                Meta meta = new Meta();
+                meta.setName(name);
                 if (null != mid) {
-                    Meta meta = metaDao.getMetaById(mid);
-                    if (null != meta)
-                        metaDomain.setMid(mid);
+                    Meta oldMeta = metaDao.getMetaById(mid);
+                    if (null != oldMeta)
+                        meta.setMid(mid);
 
-                    metaDao.updateMeta(metaDomain);
+                    metaDao.updateMeta(meta);
                     //更新原有的文章分类
-                    contentService.updateCategory(meta.getName(), name);
+                    contentService.updateCategory(oldMeta.getName(), name);
                 } else {
-                    metaDomain.setType(type);
-                    metaDao.addMeta(metaDomain);
+                    meta.setType(type);
+                    metaDao.addMeta(meta);
                 }
             } else {
                 throw BusinessException.withErrorCode(ErrorConstant.Meta.META_IS_EXIST);

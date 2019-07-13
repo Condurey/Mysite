@@ -71,7 +71,7 @@
 
     <!-- 查找数量 -->
     <select id="getCountById" resultType="java.lang.Long">
-        SELECT count(*)
+        SELECT count(1)
         FROM <include refid="BASE_TABLE"/>
         WHERE cid =  #{cid, jdbcType=INTEGER}
         AND mid = #{mid, jdbcType=INTEGER}

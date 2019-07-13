@@ -161,8 +161,8 @@ public class ContentServiceImpl implements ContentService {
     @Override
     public PageInfo<Content> searchArticle(String param, int pageNun, int pageSize) {
         PageHelper.startPage(pageNun, pageSize);
-        List<Content> contentDomains = contentDao.searchArticle(param);
-        PageInfo<Content> pageInfo = new PageInfo<>(contentDomains);
+        List<Content> contentList = contentDao.searchArticle(param);
+        PageInfo<Content> pageInfo = new PageInfo<>(contentList);
         return pageInfo;
     }
 }

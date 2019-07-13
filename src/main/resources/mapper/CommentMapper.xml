@@ -102,7 +102,7 @@
     </select>
 
     <select id="getCommentsCount" resultType="java.lang.Long">
-        SELECT count(*)
+        SELECT count(1)
         FROM
         <include refid="BASE_TABLE"/>
     </select>
