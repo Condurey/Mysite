@@ -36,6 +36,17 @@ public class DateUtils {
         return time.format(TIME_FORMATTER);
     }
 
+    public static LocalDateTime getLocalDateTime(long unixTime) {
+        LocalDateTime time = LocalDateTime.ofEpochSecond(unixTime / 1000, 0, ZoneOffset.ofHours(0));
+        return time;
+    }
+
+    public static String formatDateByUnixTime(long unixTime, String dateFormat) {
+        LocalDateTime time = getLocalDateTime(unixTime);
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(dateFormat);
+        return time.format(dateTimeFormatter);
+    }
+
     /**
      * 日期相隔天数
      *
@@ -266,29 +277,29 @@ public class DateUtils {
         return getCurrentLocalDate().with(LAST_OF_WEEK);
     }
 
-    public static void main(String[] args) {
-        //
-        Integer year = 2019;
-        System.out.println(getFirstDayOfThisYear(year));
-        System.out.println(getLastDayOfThisYear(year));
-        //
-        System.out.println(DATETIME_FORMATTER.format(plusDays(1)));
-        System.out.println(DATETIME_FORMATTER.format(plusDays(-1)));
-
-        // 取第一个周一
-        LocalDate ld = LocalDate.parse("2019-01-01").with(TemporalAdjusters.firstInMonth(DayOfWeek.MONDAY));
-        System.out.println(DATE_FORMATTER.format(ld));
-        //
-        System.out.println(DATETIME_FORMATTER.format(firstDayOfWeekInYearMonth(year, 3)));
-        System.out.println("-------------------");
-        // new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format();
-        System.out.println(getStartDayOfWeekToString());
-        System.out.println(getEndDayOfWeekToString());
-        System.out.println("-------------------");
-        System.out.println(DATETIME_FORMATTER.format(todayStart()));
-        System.out.println(DATETIME_FORMATTER.format(todayEnd()));
-        System.out.println(getEndDayOfWeek());
-    }
+//    public static void main(String[] args) {
+//        //
+//        Integer year = 2019;
+//        System.out.println(getFirstDayOfThisYear(year));
+//        System.out.println(getLastDayOfThisYear(year));
+//        //
+//        System.out.println(DATETIME_FORMATTER.format(plusDays(1)));
+//        System.out.println(DATETIME_FORMATTER.format(plusDays(-1)));
+//
+//        // 取第一个周一
+//        LocalDate ld = LocalDate.parse("2019-01-01").with(TemporalAdjusters.firstInMonth(DayOfWeek.MONDAY));
+//        System.out.println(DATE_FORMATTER.format(ld));
+//        //
+//        System.out.println(DATETIME_FORMATTER.format(firstDayOfWeekInYearMonth(year, 3)));
+//        System.out.println("-------------------");
+//        // new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format();
+//        System.out.println(getStartDayOfWeekToString());
+//        System.out.println(getEndDayOfWeekToString());
+//        System.out.println("-------------------");
+//        System.out.println(DATETIME_FORMATTER.format(todayStart()));
+//        System.out.println(DATETIME_FORMATTER.format(todayEnd()));
+//        System.out.println(getEndDayOfWeek());
+//    }
 
 
 }

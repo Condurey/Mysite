@@ -161,12 +161,12 @@ public class Commons {
      * @param patten
      * @return
      */
-//    public static String fmtdate(Integer unixTime, String patten) {
-//        if (null != unixTime && StringUtils.isNotBlank(patten)) {
-//            return DateKit.formatDateByUnixTime(unixTime, patten);
-//        }
-//        return "";
-//    }
+    public static String fmtdate(Integer unixTime, String patten) {
+        if (null != unixTime && StringUtils.isNotBlank(patten)) {
+            return DateUtils.formatDateByUnixTime(unixTime, patten);
+        }
+        return "";
+    }
 
     /**
      * 英文格式的日期
@@ -300,14 +300,15 @@ public class Commons {
      * @param email
      * @return
      */
-//    public static String gravatar(String email) {
-//        String avatarUrl = "https://github.com/identicons/";
-//        if (StringUtils.isBlank(email)) {
-//            email = "user@hanshuai.xin";
-//        }
+    public static String gravatar(String email) {
+        String avatarUrl = "https://github.com/identicons/";
+        if (StringUtils.isBlank(email)) {
+            email = "user@hanshuai.xin";
+        }
 //        String hash = TaleUtils.MD5encode(email.trim().toLowerCase());
 //        return avatarUrl + hash + ".png";
-//    }
+        return avatarUrl + ".png";
+    }
 
     /**
      * 显示文章内容，转换markdown为html

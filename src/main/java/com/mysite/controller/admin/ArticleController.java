@@ -1,25 +1,66 @@
 package com.mysite.controller.admin;
 
+import com.github.pagehelper.PageInfo;
+import com.mysite.constant.Types;
+import com.mysite.model.po.Content;
+import com.mysite.model.po.Meta;
+import com.mysite.model.query.ContentQuery;
+import com.mysite.model.query.MetaQuery;
+import com.mysite.service.ContentService;
+import com.mysite.service.MetaService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 @RequestMapping("/admin/article")
 public class ArticleController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ArticleController.class);
+    @Autowired
+    private ContentService contentService;
 
-//    /**
-//     * 文章发表
-//     * @param request
-//     * @return
-//     */
-//    @GetMapping(value = "/publish")
-//    public String newArticle(HttpServletRequest request) {
-//        List<Meta> categories = metasService.getMetas(Types.CATEGORY.getType());
-//        request.setAttribute("categories", categories);
-//        return "admin/article_edit";
-//    }
+    @Autowired
+    private MetaService metaService;
+
+    @ApiOperation("文章页")
+    @GetMapping(value = "")
+    public String index(
+            HttpServletRequest request,
+            @ApiParam(name = "page", value = "页数", required = false)
+            @RequestParam(name = "page", required = false, defaultValue = "1")
+                    int page,
+            @ApiParam(name = "limit", value = "每页数量", required = false)
+            @RequestParam(name = "limit", required = false, defaultValue = "15")
+                    int limit
+    ) {
+        PageInfo<Content> articles = contentService.getArticlesByCond(new ContentQuery(), page, limit);
+        request.setAttribute("articles", articles);
+        return "admin/article_list";
+    }
+
+    /**
+     * 文章发表
+     *
+     * @param request
+     * @return
+     */
+    @ApiOperation("发布文章页")
+    @GetMapping(value = "/publish")
+    public String newArticle(HttpServletRequest request) {
+        MetaQuery metaQuery = new MetaQuery();
+        metaQuery.setType(Types.CATEGORY.getType());
+        List<Meta> metaList = metaService.getMetas(metaQuery);
+        request.setAttribute("categories", metaList);
+        return "admin/article_edit";
+    }
 }
