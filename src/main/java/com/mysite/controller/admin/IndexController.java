@@ -1,5 +1,6 @@
 package com.mysite.controller.admin;
 
+import io.swagger.annotations.Api;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,8 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * 后台管理首页
  * Created by Administrator on 2017/3/9 009.
  */
+@Api("后台首页")
 @Controller("adminIndexController")
-@RequestMapping("/admin")
+@RequestMapping(value = "/admin")
 public class IndexController {
 
     /**

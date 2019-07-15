@@ -24,7 +24,7 @@ public interface ErrorConstant {
 
     }
 
-    interface Att {
+    interface Attachment {
 
         String ADD_NEW_ATT_FAIL = "添加附件信息失败";
         String UPDATE_ATT_FAIL = "更新附件信息失败";

@@ -2,18 +2,19 @@ package com.mysite.controller.admin;
 
 import com.github.pagehelper.PageInfo;
 import com.mysite.constant.Types;
+import com.mysite.exception.BusinessException;
 import com.mysite.model.po.Content;
 import com.mysite.model.po.Meta;
 import com.mysite.model.query.ContentQuery;
 import com.mysite.model.query.MetaQuery;
 import com.mysite.service.ContentService;
 import com.mysite.service.MetaService;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,8 +22,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+@Api("文章管理")
 @Controller
 @RequestMapping("/admin/article")
+@Transactional(rollbackFor = BusinessException.class)
 public class ArticleController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ArticleController.class);
@@ -33,15 +36,15 @@ public class ArticleController {
     private MetaService metaService;
 
     @ApiOperation("文章页")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(name = "page", value = "页数", paramType = "form", dataType = "int"),
+            @ApiImplicitParam(name = "limit", value = "每页数量", paramType = "form", dataType = "int")
+    })
     @GetMapping(value = "")
     public String index(
-            HttpServletRequest request,
-            @ApiParam(name = "page", value = "页数", required = false)
-            @RequestParam(name = "page", required = false, defaultValue = "1")
-                    int page,
-            @ApiParam(name = "limit", value = "每页数量", required = false)
-            @RequestParam(name = "limit", required = false, defaultValue = "15")
-                    int limit
+            @RequestParam(name = "page", required = false, defaultValue = "1") int page,
+            @RequestParam(name = "limit", required = false, defaultValue = "15") int limit,
+            HttpServletRequest request
     ) {
         PageInfo<Content> articles = contentService.getArticlesByCond(new ContentQuery(), page, limit);
         request.setAttribute("articles", articles);
