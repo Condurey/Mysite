@@ -187,6 +187,8 @@
                     <include>**/*.png</include>
                     <include>**/*.gif</include>
                     <include>**/*.jpg</include>
+                    <include>**/*.woff</include>
+                    <include>**/*.ttf</include>
                     <!--加载静态文件-->
                     <include>/static/</include>
                 </includes>
@@ -205,6 +207,8 @@
                     <include>**/*.png</include>
                     <include>**/*.gif</include>
                     <include>**/*.jpg</include>
+                    <include>**/*.woff</include>
+                    <include>**/*.ttf</include>
                     <!--加载静态文件-->
                     <include>/static/</include>
                 </includes>
