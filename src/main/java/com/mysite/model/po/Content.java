@@ -21,6 +21,9 @@ public class Content implements Serializable {
      */
     private String title;
 
+
+    private String titlePic;
+
     /**
      * 内容缩略名
      */
