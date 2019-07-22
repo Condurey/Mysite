@@ -1,13 +1,23 @@
 package com.mysite.controller.admin;
 
+import com.mysite.constant.LogActions;
 import com.mysite.constant.WebConst;
+import com.mysite.exception.BusinessException;
+import com.mysite.model.po.User;
+import com.mysite.service.LogService;
+import com.mysite.service.UserService;
+import com.mysite.utils.APIResponse;
+import com.mysite.utils.BlogUtils;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -21,11 +31,59 @@ import java.io.IOException;
 public class AuthController {
 
     private static final Logger LOGGER = LogManager.getLogger(AuthController.class);
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private LogService logService;
 
     @ApiOperation("跳转登录页")
     @GetMapping(value = "/login")
     public String login() {
         return "admin/login";
+    }
+
+    @ApiOperation("登录")
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(name = "username", value = "用户名", paramType = "form", required = true),
+            @ApiImplicitParam(name = "password", value = "密码", paramType = "form", required = true),
+            @ApiImplicitParam(name = "remeber_me", value = "记住我", paramType = "form")
+    })
+    @PostMapping(value = "/login")
+    @ResponseBody
+    public APIResponse toLogin(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            @RequestParam(name = "username") String username,
+            @RequestParam(name = "password") String password,
+            @RequestParam(name = "remeber_me", required = false) String remeber_me
+    ) {
+//        Integer error_count = cache.get("login_error_count");
+        try {
+            User userInfo = userService.login(username, password);
+            request.getSession().setAttribute(WebConst.LOGIN_SESSION_KEY, userInfo);
+            if (StringUtils.isNotBlank(remeber_me)) {
+                BlogUtils.setCookie(response, userInfo.getUid());
+            }
+            logService.addLog(LogActions.LOGIN.getAction(), null, request.getRemoteAddr(), userInfo.getUid());
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+//            error_count = null == error_count ? 1 : error_count + 1;
+//            if (error_count > 3) {
+//                return APIResponse.fail("您输入密码已经错误超过3次，请10分钟后尝试");
+//            }
+//            cache.set("login_error_count", error_count, 10 * 60);
+            String msg = "登录失败";
+            if (e instanceof BusinessException) {
+                msg = e.getMessage();
+            } else {
+                LOGGER.error(msg, e);
+            }
+            return APIResponse.fail(msg);
+        }
+
+        return APIResponse.success();
+
     }
 
 

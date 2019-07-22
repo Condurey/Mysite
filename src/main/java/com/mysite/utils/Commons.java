@@ -15,6 +15,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 公共函数
@@ -150,9 +152,9 @@ public class Commons {
      * @param unixTime
      * @return
      */
-//    public static String fmtdate(Integer unixTime) {
-//        return fmtdate(unixTime, "yyyy-MM-dd");
-//    }
+    public static String fmtdate(Integer unixTime) {
+        return fmtdate(unixTime, "yyyy-MM-dd");
+    }
 
     /**
      * 格式化unix时间戳为日期
@@ -173,12 +175,12 @@ public class Commons {
      * @param unixTime
      * @return
      */
-//    public static String fmtdate_en(Integer unixTime){
-//        String fmtdate = fmtdate(unixTime, "d,MMM,yyyy");
-//        String[] dateArr = fmtdate.split(",");
-//        String rs = "<span>" + dateArr[0] + "</span> " + dateArr[1] + "  " + dateArr[2];
-//        return rs;
-//    }
+    public static String fmtdate_en(Integer unixTime) {
+        String fmtdate = fmtdate(unixTime, "d,MMM,yyyy");
+        String[] dateArr = fmtdate.split(",");
+        String rs = "<span>" + dateArr[0] + "</span> " + dateArr[1] + "  " + dateArr[2];
+        return rs;
+    }
 
 
     /**
@@ -186,18 +188,18 @@ public class Commons {
      * @param unixTime
      * @return
      */
-//    public static String fmtdate_en_m(Integer unixTime){
-//        return fmtdate(unixTime,"MMM d");
-//    }
+    public static String fmtdate_en_m(Integer unixTime) {
+        return fmtdate(unixTime, "MMM d");
+    }
 
     /**
      * 日期-年
      * @param unixTime
      * @return
      */
-//    public static String fmtdate_en_y(Integer unixTime){
-//        return fmtdate(unixTime,"yyyy");
-//    }
+    public static String fmtdate_en_y(Integer unixTime) {
+        return fmtdate(unixTime, "yyyy");
+    }
 
     /**
      * 将中文的yyyy年MM月 - > yyyy
@@ -316,14 +318,14 @@ public class Commons {
      * @param value
      * @return
      */
-//    public static String article(String value) {
-//        if (StringUtils.isNotBlank(value)) {
-//            value = value.replace("<!--more-->", "\r\n");
-//            value = value.replace("<!-- more -->", "\r\n");
-//            return TaleUtils.mdToHtml(value);
-//        }
-//        return "";
-//    }
+    public static String article(String value) {
+        if (StringUtils.isNotBlank(value)) {
+            value = value.replace("<!--more-->", "\r\n");
+            value = value.replace("<!-- more -->", "\r\n");
+            return BlogUtils.mdToHtml(value);
+        }
+        return "";
+    }
 
     /**
      * 返回文章链接地址
@@ -430,24 +432,24 @@ public class Commons {
      *
      * @return
      */
-//    public static String show_thumb(String content) {
-//        content = TaleUtils.mdToHtml(content);
-//        if (content.contains("<img")) {
-//            String img = "";
-//            String regEx_img = "<img.*src\\s*=\\s*(.*?)[^>]*?>";
-//            Pattern p_image = Pattern.compile(regEx_img, Pattern.CASE_INSENSITIVE);
-//            Matcher m_image = p_image.matcher(content);
-//            if (m_image.find()) {
-//                img = img + "," + m_image.group();
-//                // //匹配src
-//                Matcher m = Pattern.compile("src\\s*=\\s*\'?\"?(.*?)(\'|\"|>|\\s+)").matcher(img);
-//                if (m.find()) {
-//                    return m.group(1);
-//                }
-//            }
-//        }
-//        return "";
-//    }
+    public static String show_thumb(String content) {
+        content = BlogUtils.mdToHtml(content);
+        if (content.contains("<img")) {
+            String img = "";
+            String regEx_img = "<img.*src\\s*=\\s*(.*?)[^>]*?>";
+            Pattern p_image = Pattern.compile(regEx_img, Pattern.CASE_INSENSITIVE);
+            Matcher m_image = p_image.matcher(content);
+            if (m_image.find()) {
+                img = img + "," + m_image.group();
+                // //匹配src
+                Matcher m = Pattern.compile("src\\s*=\\s*\'?\"?(.*?)(\'|\"|>|\\s+)").matcher(img);
+                if (m.find()) {
+                    return m.group(1);
+                }
+            }
+        }
+        return "";
+    }
 
     /**
      * 获取文章中的所有图片
@@ -574,21 +576,21 @@ public class Commons {
      * @param len   要截取文字的个数
      * @return
      */
-//    public static String intro(String value, int len) {
-//        Integer pos = value.indexOf("<!--more-->");
-//        if (null == pos || pos == 0 || pos == -1)
-//            pos = value.indexOf("<!-- more -->");
-//        if (pos != -1) {
-//            String html = value.substring(0, pos);
-//            return TaleUtils.mdToHtml(TaleUtils.mdToHtml(html));
-//        } else {
-//            String text = TaleUtils.mdToHtml(TaleUtils.mdToHtml(value));
-//            if (text.length() > len) {
-//                return text.substring(0, len);
-//            }
-//            return text;
-//        }
-//    }
+    public static String intro(String value, int len) {
+        Integer pos = value.indexOf("<!--more-->");
+        if (null == pos || pos == 0 || pos == -1)
+            pos = value.indexOf("<!-- more -->");
+        if (pos != -1) {
+            String html = value.substring(0, pos);
+            return BlogUtils.mdToHtml(BlogUtils.mdToHtml(html));
+        } else {
+            String text = BlogUtils.mdToHtml(BlogUtils.mdToHtml(value));
+            if (text.length() > len) {
+                return text.substring(0, len);
+            }
+            return text;
+        }
+    }
 
 
 }

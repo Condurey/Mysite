@@ -1,5 +1,6 @@
 package com.mysite.interceptor;
 
+import com.mysite.utils.AdminCommons;
 import com.mysite.utils.Commons;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,8 +29,8 @@ public class BaseInterceptor implements HandlerInterceptor {
     @Resource
     private Commons commons;
 
-//    @Resource
-//    private AdminCommons adminCommons;
+    @Resource
+    private AdminCommons adminCommons;
 
 
 //    @Override
@@ -67,7 +68,7 @@ public class BaseInterceptor implements HandlerInterceptor {
     @Override
     public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception {
         httpServletRequest.setAttribute("commons", commons);//一些工具类和公共方法
-//        httpServletRequest.setAttribute("adminCommons", adminCommons);
+        httpServletRequest.setAttribute("adminCommons", adminCommons);
     }
 
     @Override
