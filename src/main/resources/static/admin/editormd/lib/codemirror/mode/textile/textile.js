@@ -132,7 +132,6 @@
     }
     return tokenStyles(state);
   }
-
     function tokenStyles(state) {
     var disabled = textileDisabled(state);
     if (disabled) return disabled;

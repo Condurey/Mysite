@@ -253,7 +253,6 @@ CodeMirror.defineMode("haxe", function(config, parserConfig) {
       else if (wanted == ";") return pass();
       else return cont(f);
     }
-
       return f;
   }
 

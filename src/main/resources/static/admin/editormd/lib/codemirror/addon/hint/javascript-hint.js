@@ -62,7 +62,6 @@
                       function (e, cur) {return e.getTokenAt(cur);},
                       options);
   }
-
     CodeMirror.registerHelper("hint", "javascript", javascriptHint);
 
   function getCoffeeScriptToken(editor, cur) {

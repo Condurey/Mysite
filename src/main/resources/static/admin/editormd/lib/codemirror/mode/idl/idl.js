@@ -14,7 +14,6 @@
   function wordRegexp(words) {
     return new RegExp('^((' + words.join(')|(') + '))\\b', 'i');
   }
-
     var builtinArray = [
     'a_correlate', 'abs', 'acos', 'adapt_hist_equal', 'alog',
     'alog2', 'alog10', 'amoeba', 'annotate', 'app_user_dir',

@@ -20,7 +20,6 @@ CodeMirror.defineMode('shell', function() {
       words[split[i]] = style;
     }
   }
-
     // Atoms
   define('atom', 'true false');
 
@@ -123,7 +122,6 @@ CodeMirror.defineMode('shell', function() {
   function tokenize(stream, state) {
     return (state.tokens[0] || tokenBase) (stream, state);
   }
-
     return {
     startState: function() {return {tokens:[]};},
     token: function(stream, state) {

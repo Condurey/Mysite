@@ -429,7 +429,6 @@
   function wordRegexp(words) {
     return new RegExp("^((" + words.join(")|(") + "))\\b");
   }
-
     function keySet(array) {
     var keys = {};
     for (var i = 0; i < array.length; ++i) {
@@ -437,7 +436,6 @@
     }
     return keys;
     }
-
     CodeMirror.registerHelper("hintWords", "stylus", hintWords);
   CodeMirror.defineMIME("text/x-styl", "stylus");
 

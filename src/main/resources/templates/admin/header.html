@@ -46,12 +46,9 @@
                 <ul class="nav navbar-nav navbar-right pull-right">
                     <li class="dropdown">
                         <a th:href="@{index.html}" class="dropdown-toggle profile" data-toggle="dropdown"
-                           aria-expanded="true">
-                            <!--<img th:src="${commons.gravatar(session.login_user.email)}" alt="user-img"
-                                                     class="img-circle"/>-->
-                            <img th:src="${commons.gravatar('515947025@qq.com')}" alt="user-img"
-                                 class="img-circle"/>
-                        </a>
+                           aria-expanded="true"><img th:src="${commons.gravatar(session.login_user.email)}"
+                                                     alt="user-img"
+                                                     class="img-circle"/> </a>
                         <ul class="dropdown-menu">
                             <li><a th:href="@{${commons.site_url()}}" target="_blank"><i class="fa fa-eye"
                                                                                          aria-hidden="true"></i>

@@ -126,7 +126,6 @@ CodeMirror.defineMode("octave", function() {
     stream.next();
     return 'error';
   }
-
     return {
     startState: function() {
       return {
