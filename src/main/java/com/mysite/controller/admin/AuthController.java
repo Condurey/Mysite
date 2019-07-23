@@ -51,12 +51,11 @@ public class AuthController {
     })
     @PostMapping(value = "/login")
     @ResponseBody
-    public APIResponse toLogin(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            @RequestParam(name = "username") String username,
-            @RequestParam(name = "password") String password,
-            @RequestParam(name = "remeber_me", required = false) String remeber_me
+    public APIResponse toLogin(@RequestParam(name = "username") String username,
+                               @RequestParam(name = "password") String password,
+                               @RequestParam(name = "remeber_me", required = false) String remeber_me,
+                               HttpServletRequest request,
+                               HttpServletResponse response
     ) {
 //        Integer error_count = cache.get("login_error_count");
         try {

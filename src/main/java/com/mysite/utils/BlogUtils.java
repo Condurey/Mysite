@@ -23,7 +23,7 @@ public class BlogUtils {
      */
     public static void setCookie(HttpServletResponse response, Integer uid) {
         try {
-            String val = AESUtils.enAes(uid.toString(), WebConst.AES_SALT);
+            String val = EncryptUtils.enAes(uid.toString(), WebConst.AES_SALT);
             boolean isSSL = false;
             Cookie cookie = new Cookie(WebConst.USER_IN_COOKIE, val);
             cookie.setPath("/");

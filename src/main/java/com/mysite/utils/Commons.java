@@ -310,9 +310,8 @@ public class Commons {
         if (StringUtils.isBlank(email)) {
             email = "user@hanshuai.xin";
         }
-//        String hash = TaleUtils.MD5encode(email.trim().toLowerCase());
-//        return avatarUrl + hash + ".png";
-        return avatarUrl + ".png";
+        String hash = EncryptUtils.MD5encode(email.trim().toLowerCase());
+        return avatarUrl + hash + ".png";
     }
 
     /**

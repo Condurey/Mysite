@@ -1,13 +1,16 @@
 package com.mysite.utils;
 
+import org.apache.commons.lang3.StringUtils;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
-public class AESUtils {
+public class EncryptUtils {
 
     public static String enAes(String data, String key) throws Exception {
         Cipher cipher = Cipher.getInstance("AES");
@@ -24,5 +27,32 @@ public class AESUtils {
         byte[] cipherTextBytes = new BASE64Decoder().decodeBuffer(data);
         byte[] decValue = cipher.doFinal(cipherTextBytes);
         return new String(decValue);
+    }
+
+    /**
+     * md5加密
+     *
+     * @param source 数据源
+     * @return 加密字符串
+     */
+    public static String MD5encode(String source) {
+        if (StringUtils.isBlank(source)) {
+            return null;
+        }
+        MessageDigest messageDigest = null;
+        try {
+            messageDigest = MessageDigest.getInstance("MD5");
+        } catch (NoSuchAlgorithmException ignored) {
+        }
+        byte[] encode = messageDigest.digest(source.getBytes());
+        StringBuilder hexString = new StringBuilder();
+        for (byte anEncode : encode) {
+            String hex = Integer.toHexString(0xff & anEncode);
+            if (hex.length() == 1) {
+                hexString.append('0');
+            }
+            hexString.append(hex);
+        }
+        return hexString.toString();
     }
 }

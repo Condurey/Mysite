@@ -95,5 +95,47 @@ public class IndexController {
     }
 
 
+    /**
+     * 修改密码
+     */
+//    @PostMapping(value = "/password")
+//    @ResponseBody
+//    public APIResponse upPwd(@RequestParam String oldPassword, @RequestParam String password, HttpServletRequest request,HttpSession session) {
+//        User users = this.user(request);
+//        if (StringUtils.isBlank(oldPassword) || StringUtils.isBlank(password)) {
+//            return APIResponse.fail("请确认信息输入完整");
+//        }
+//
+//        if (!users.getPassword().equals(EncryptUtils.MD5encode(users.getUsername() + oldPassword))) {
+//            return APIResponse.fail("旧密码错误");
+//        }
+//        if (password.length() < 6 || password.length() > 14) {
+//            return APIResponse.fail("请输入6-14位密码");
+//        }
+//
+//        try {
+//            User temp = new User();
+//            temp.setUid(users.getUid());
+//            String pwd = EncryptUtils.MD5encode(users.getUsername() + password);
+//            temp.setPassword(pwd);
+//            userService.updateUserInfo(temp);
+//            logService.addLog(LogActions.UP_PWD.getAction(), null, request.getRemoteAddr(), this.getUid(request));
+//
+//            //更新session中的数据
+//            UserDomain original= (UserDomain)session.getAttribute(WebConst.LOGIN_SESSION_KEY);
+//            original.setPassword(pwd);
+//            session.setAttribute(WebConst.LOGIN_SESSION_KEY,original);
+//            return APIResponse.success();
+//        } catch (Exception e){
+//            String msg = "密码修改失败";
+//            if (e instanceof BusinessException) {
+//                msg = e.getMessage();
+//            } else {
+//                LOGGER.error(msg, e);
+//            }
+//            return APIResponse.fail(msg);
+//        }
+//    }
+
 
 }
