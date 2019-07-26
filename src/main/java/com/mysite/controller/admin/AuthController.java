@@ -3,11 +3,11 @@ package com.mysite.controller.admin;
 import com.mysite.constant.LogActions;
 import com.mysite.constant.WebConst;
 import com.mysite.exception.BusinessException;
+import com.mysite.interceptor.AuthService;
 import com.mysite.model.po.User;
 import com.mysite.service.LogService;
 import com.mysite.service.UserService;
 import com.mysite.utils.APIResponse;
-import com.mysite.utils.BlogUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -33,6 +33,9 @@ public class AuthController {
     private static final Logger LOGGER = LogManager.getLogger(AuthController.class);
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private AuthService authService;
 
     @Autowired
     private LogService logService;
@@ -62,7 +65,7 @@ public class AuthController {
             User userInfo = userService.login(username, password);
             request.getSession().setAttribute(WebConst.LOGIN_SESSION_KEY, userInfo);
             if (StringUtils.isNotBlank(remeber_me)) {
-                BlogUtils.setCookie(response, userInfo.getUid());
+                authService.setCookie(response, userInfo.getUid());
             }
             logService.addLog(LogActions.LOGIN.getAction(), null, request.getRemoteAddr(), userInfo.getUid());
         } catch (Exception e) {

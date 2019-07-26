@@ -1,7 +1,9 @@
 package com.mysite.controller.admin;
 
 import com.github.pagehelper.PageInfo;
+import com.mysite.constant.LogActions;
 import com.mysite.constant.Types;
+import com.mysite.controller.BaseController;
 import com.mysite.exception.BusinessException;
 import com.mysite.model.po.Content;
 import com.mysite.model.po.Meta;
@@ -29,7 +31,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/admin/article")
 @Transactional(rollbackFor = BusinessException.class)
-public class ArticleController {
+public class ArticleController extends BaseController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ArticleController.class);
     @Autowired
@@ -188,7 +190,7 @@ public class ArticleController {
                                      HttpServletRequest request
     ) {
         contentService.deleteArticleById(cid);
-//        logService.addLog(LogActions.DEL_ARTICLE.getAction(), cid + "", request.getRemoteAddr(), this.getUid(request));
+        logService.addLog(LogActions.DEL_ARTICLE.getAction(), cid + "", request.getRemoteAddr(), this.getUid(request));
         return APIResponse.success();
     }
 

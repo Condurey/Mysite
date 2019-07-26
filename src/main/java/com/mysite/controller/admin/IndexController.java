@@ -2,6 +2,7 @@ package com.mysite.controller.admin;
 
 import com.github.pagehelper.PageInfo;
 import com.mysite.constant.WebConst;
+import com.mysite.controller.BaseController;
 import com.mysite.model.dto.StatisticsDto;
 import com.mysite.model.po.Comment;
 import com.mysite.model.po.Content;
@@ -31,7 +32,7 @@ import java.util.List;
 @Api("后台首页")
 @Controller("adminIndexController")
 @RequestMapping(value = "/admin")
-public class IndexController {
+public class IndexController extends BaseController {
     private static final Logger LOGGER = LoggerFactory.getLogger(IndexController.class);
 
     @Autowired
@@ -76,10 +77,10 @@ public class IndexController {
     @PostMapping(value = "/profile")
     @ResponseBody
     public APIResponse saveProfile(@RequestParam String screenName, @RequestParam String email, HttpServletRequest request, HttpSession session) {
-//        User users = this.user(request);
+        User users = this.user(request);
         if (StringUtils.isNotBlank(screenName) && StringUtils.isNotBlank(email)) {
             User temp = new User();
-//            temp.setUid(users.getUid());
+            temp.setUid(users.getUid());
             temp.setScreenName(screenName);
             temp.setEmail(email);
             userService.updateUserInfo(temp);

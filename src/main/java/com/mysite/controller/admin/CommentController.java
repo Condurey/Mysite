@@ -2,8 +2,10 @@ package com.mysite.controller.admin;
 
 import com.github.pagehelper.PageInfo;
 import com.mysite.constant.ErrorConstant;
+import com.mysite.controller.BaseController;
 import com.mysite.exception.BusinessException;
 import com.mysite.model.po.Comment;
+import com.mysite.model.po.User;
 import com.mysite.model.query.CommentQuery;
 import com.mysite.service.CommentService;
 import com.mysite.utils.APIResponse;
@@ -23,7 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 @Api("评论相关接口")
 @Controller
 @RequestMapping("/admin/comments")
-public class CommentController {
+public class CommentController extends BaseController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CommentController.class);
 
@@ -41,8 +43,7 @@ public class CommentController {
                         @RequestParam(name = "limit", required = false, defaultValue = "15") int limit,
                         HttpServletRequest request
     ) {
-//        User user = this.user(request);
-
+        User user = this.user(request);
         PageInfo<Comment> comments = commentService.getCommentsByCond(new CommentQuery(), page, limit);
         request.setAttribute("comments", comments);
         return "admin/comment_list";

@@ -7,6 +7,7 @@ import com.mysite.service.OptionService;
 import com.mysite.utils.APIResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,7 +52,7 @@ public class SettingController {
             Map<String, String[]> parameterMap = request.getParameterMap();
             Map<String, String> querys = new HashMap<>();
             parameterMap.forEach((key, value) -> {
-//                querys.put(key, join(value));
+                querys.put(key, StringUtils.join(value, ','));
             });
             optionService.saveOptions(querys);
             WebConst.initConfig = querys;
