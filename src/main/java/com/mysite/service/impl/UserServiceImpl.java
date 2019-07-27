@@ -5,6 +5,7 @@ import com.mysite.dao.UserDao;
 import com.mysite.exception.BusinessException;
 import com.mysite.model.po.User;
 import com.mysite.service.UserService;
+import com.mysite.utils.EncryptUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,8 +40,7 @@ public class UserServiceImpl implements UserService {
         if (StringUtils.isBlank(username) || StringUtils.isBlank(password))
             throw BusinessException.withErrorCode(ErrorConstant.Auth.USERNAME_PASSWORD_IS_EMPTY);
 
-//        String pwd = TaleUtils.MD5encode(username + password);
-        String pwd = "a66abb5684c45962d887564f08346e8d";
+        String pwd = EncryptUtils.MD5encode(username + password);
         User user = userDao.getUserInfoByCond(username, pwd);
         if (null == user)
             throw BusinessException.withErrorCode(ErrorConstant.Auth.USERNAME_PASSWORD_ERROR);

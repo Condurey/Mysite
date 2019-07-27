@@ -58,6 +58,7 @@ public class EncryptUtils {
 
 
 //    public static void main(String[] args) {
-//        System.out.println(MD5encode("Condurey"));
+//        String tmpDir = System.getProperty("java.io.tmpdir");
+//        System.out.println(tmpDir);
 //    }
 }

@@ -6,7 +6,12 @@ import lombok.Data;
  * Created by Donghua.Chen on 2018/4/29.
  */
 @Data
-public class AttachDto extends BaseDto {
+public class AttachDto {
+
+    /**
+     * 用户名
+     */
+    private String userName;
 
     /**
      * 主键编号

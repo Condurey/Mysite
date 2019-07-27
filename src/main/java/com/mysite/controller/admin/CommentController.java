@@ -5,7 +5,6 @@ import com.mysite.constant.ErrorConstant;
 import com.mysite.controller.BaseController;
 import com.mysite.exception.BusinessException;
 import com.mysite.model.po.Comment;
-import com.mysite.model.po.User;
 import com.mysite.model.query.CommentQuery;
 import com.mysite.service.CommentService;
 import com.mysite.utils.APIResponse;
@@ -43,7 +42,6 @@ public class CommentController extends BaseController {
                         @RequestParam(name = "limit", required = false, defaultValue = "15") int limit,
                         HttpServletRequest request
     ) {
-        User user = this.user(request);
         PageInfo<Comment> comments = commentService.getCommentsByCond(new CommentQuery(), page, limit);
         request.setAttribute("comments", comments);
         return "admin/comment_list";

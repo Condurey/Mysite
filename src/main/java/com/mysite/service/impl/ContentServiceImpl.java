@@ -47,25 +47,25 @@ public class ContentServiceImpl implements ContentService {
     @Transactional
     @Override
     @CacheEvict(value = {"atricleCache", "atricleCaches"}, allEntries = true, beforeInvocation = true)
-    public void addArticle(Content contentDomain) {
-        if (null == contentDomain)
+    public void addArticle(Content content) {
+        if (null == content)
             throw BusinessException.withErrorCode(ErrorConstant.Common.PARAM_IS_EMPTY);
-        if (StringUtils.isBlank(contentDomain.getTitle()))
+        if (StringUtils.isBlank(content.getTitle()))
             throw BusinessException.withErrorCode(ErrorConstant.Article.TITLE_CAN_NOT_EMPTY);
-        if (contentDomain.getTitle().length() > WebConst.MAX_TITLE_COUNT)
+        if (content.getTitle().length() > WebConst.MAX_TITLE_COUNT)
             throw BusinessException.withErrorCode(ErrorConstant.Article.TITLE_IS_TOO_LONG);
-        if (StringUtils.isBlank(contentDomain.getContent()))
+        if (StringUtils.isBlank(content.getContent()))
             throw BusinessException.withErrorCode(ErrorConstant.Article.CONTENT_CAN_NOT_EMPTY);
-        if (contentDomain.getContent().length() > WebConst.MAX_TEXT_COUNT)
+        if (content.getContent().length() > WebConst.MAX_TEXT_COUNT)
             throw BusinessException.withErrorCode(ErrorConstant.Article.CONTENT_IS_TOO_LONG);
 
         //标签和分类
-        String tags = contentDomain.getTags();
-        String categories = contentDomain.getCategories();
+        String tags = content.getTags();
+        String categories = content.getCategories();
 
-        contentDao.addArticle(contentDomain);
+        contentDao.addArticle(content);
 
-        int cid = contentDomain.getCid();
+        int cid = content.getCid();
         metaService.addMetas(cid, tags, Types.TAG.getType());
         metaService.addMetas(cid, categories, Types.CATEGORY.getType());
     }

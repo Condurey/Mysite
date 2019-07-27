@@ -10,6 +10,7 @@ import com.mysite.model.po.Content;
 import com.mysite.model.query.CommentQuery;
 import com.mysite.service.CommentService;
 import com.mysite.service.ContentService;
+import com.mysite.utils.PatternUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -54,8 +55,7 @@ public class CommentServiceImpl implements CommentService {
         if (StringUtils.isBlank(Comment.getAuthor())) {
             Comment.setAuthor("热心网友");
         }
-//        if (StringUtils.isNotBlank(Comment.getMail()) && !TaleUtils.isEmail(Comment.getMail())) {
-        if (StringUtils.isNotBlank(Comment.getMail())) {
+        if (StringUtils.isNotBlank(Comment.getMail()) && !PatternUtils.isEmail(Comment.getMail())) {
             msg = "请输入正确的邮箱格式";
         }
         if (StringUtils.isBlank(Comment.getContent())) {

@@ -34,7 +34,7 @@ public class MetaServiceImpl implements MetaService {
     @Resource
     private MetaDao metaDao;
 
-    @Autowired
+    @Resource
     private RelationshipDao relationshipDao;
 
 
