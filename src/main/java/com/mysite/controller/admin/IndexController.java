@@ -1,8 +1,12 @@
 package com.mysite.controller.admin;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
+import com.mysite.constant.LogActions;
 import com.mysite.constant.WebConst;
 import com.mysite.controller.BaseController;
+import com.mysite.exception.BusinessException;
 import com.mysite.model.dto.StatisticsDto;
 import com.mysite.model.po.Comment;
 import com.mysite.model.po.Content;
@@ -12,6 +16,7 @@ import com.mysite.service.LogService;
 import com.mysite.service.SiteService;
 import com.mysite.service.UserService;
 import com.mysite.utils.APIResponse;
+import com.mysite.utils.EncryptUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
@@ -33,6 +38,7 @@ import java.util.List;
 @Controller("adminIndexController")
 @RequestMapping(value = "/admin")
 public class IndexController extends BaseController {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(IndexController.class);
 
     @Autowired
@@ -43,6 +49,9 @@ public class IndexController extends BaseController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @ApiOperation("进入首页")
     @GetMapping(value = {"", "/index"})
@@ -84,8 +93,12 @@ public class IndexController extends BaseController {
             temp.setScreenName(screenName);
             temp.setEmail(email);
             userService.updateUserInfo(temp);
-//            logService.addLog(LogActions.UP_INFO.getAction(), GsonUtils.toJsonString(temp), request.getRemoteAddr(), this.getUid(request));
-
+            try {
+                logService.addLog(LogActions.UP_INFO.getAction(), objectMapper.writeValueAsString(temp), request.getRemoteAddr(), this.getUid(request));
+            } catch (JsonProcessingException e) {
+                String msg = "用户类型转换JSON失败";
+                LOGGER.error(msg, e);
+            }
             //更新session中的数据
             User original = (User) session.getAttribute(WebConst.LOGIN_SESSION_KEY);
             original.setScreenName(screenName);
@@ -99,44 +112,44 @@ public class IndexController extends BaseController {
     /**
      * 修改密码
      */
-//    @PostMapping(value = "/password")
-//    @ResponseBody
-//    public APIResponse upPwd(@RequestParam String oldPassword, @RequestParam String password, HttpServletRequest request,HttpSession session) {
-//        User users = this.user(request);
-//        if (StringUtils.isBlank(oldPassword) || StringUtils.isBlank(password)) {
-//            return APIResponse.fail("请确认信息输入完整");
-//        }
-//
-//        if (!users.getPassword().equals(EncryptUtils.MD5encode(users.getUsername() + oldPassword))) {
-//            return APIResponse.fail("旧密码错误");
-//        }
-//        if (password.length() < 6 || password.length() > 14) {
-//            return APIResponse.fail("请输入6-14位密码");
-//        }
-//
-//        try {
-//            User temp = new User();
-//            temp.setUid(users.getUid());
-//            String pwd = EncryptUtils.MD5encode(users.getUsername() + password);
-//            temp.setPassword(pwd);
-//            userService.updateUserInfo(temp);
-//            logService.addLog(LogActions.UP_PWD.getAction(), null, request.getRemoteAddr(), this.getUid(request));
-//
-//            //更新session中的数据
-//            UserDomain original= (UserDomain)session.getAttribute(WebConst.LOGIN_SESSION_KEY);
-//            original.setPassword(pwd);
-//            session.setAttribute(WebConst.LOGIN_SESSION_KEY,original);
-//            return APIResponse.success();
-//        } catch (Exception e){
-//            String msg = "密码修改失败";
-//            if (e instanceof BusinessException) {
-//                msg = e.getMessage();
-//            } else {
-//                LOGGER.error(msg, e);
-//            }
-//            return APIResponse.fail(msg);
-//        }
-//    }
+    @PostMapping(value = "/password")
+    @ResponseBody
+    public APIResponse upPwd(@RequestParam String oldPassword, @RequestParam String password, HttpServletRequest request, HttpSession session) {
+        User users = this.user(request);
+        if (StringUtils.isBlank(oldPassword) || StringUtils.isBlank(password)) {
+            return APIResponse.fail("请确认信息输入完整");
+        }
+
+        if (!users.getPassword().equals(EncryptUtils.MD5encode(users.getUsername() + oldPassword))) {
+            return APIResponse.fail("旧密码错误");
+        }
+        if (password.length() < 6 || password.length() > 14) {
+            return APIResponse.fail("请输入6-14位密码");
+        }
+
+        try {
+            User temp = new User();
+            temp.setUid(users.getUid());
+            String pwd = EncryptUtils.MD5encode(users.getUsername() + password);
+            temp.setPassword(pwd);
+            userService.updateUserInfo(temp);
+            logService.addLog(LogActions.UP_PWD.getAction(), null, request.getRemoteAddr(), this.getUid(request));
+
+            //更新session中的数据
+            User original = (User) session.getAttribute(WebConst.LOGIN_SESSION_KEY);
+            original.setPassword(pwd);
+            session.setAttribute(WebConst.LOGIN_SESSION_KEY, original);
+            return APIResponse.success();
+        } catch (Exception e) {
+            String msg = "密码修改失败";
+            if (e instanceof BusinessException) {
+                msg = e.getMessage();
+            } else {
+                LOGGER.error(msg, e);
+            }
+            return APIResponse.fail(msg);
+        }
+    }
 
 
 }

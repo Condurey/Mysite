@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" th:with="F=${commons.random(5, '.png')}"
+<html lang="en" th:with="pic=${commons.random(5, '.png')}" xmlns:th="http://www.thymeleaf.org"
       th:style="'background:url(/admin/images/bg/'+@{${pic}}+');no-repeat; background-size: cover;'">
 <head>
     <meta charset="utf-8"/>

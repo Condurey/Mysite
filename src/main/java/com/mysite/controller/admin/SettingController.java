@@ -1,6 +1,9 @@
 package com.mysite.controller.admin;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mysite.constant.LogActions;
 import com.mysite.constant.WebConst;
+import com.mysite.controller.BaseController;
 import com.mysite.model.po.Option;
 import com.mysite.service.LogService;
 import com.mysite.service.OptionService;
@@ -23,13 +26,16 @@ import java.util.Map;
 @Api("系统设置")
 @Controller
 @RequestMapping("/admin/setting")
-public class SettingController {
+public class SettingController extends BaseController {
 
     @Autowired
     private OptionService optionService;
 
     @Autowired
     private LogService logService;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
 
     @ApiOperation("进入设置页")
@@ -57,7 +63,7 @@ public class SettingController {
             optionService.saveOptions(querys);
             WebConst.initConfig = querys;
 
-//            logService.addLog(LogActions.SYS_SETTING.getAction(), GsonUtils.toJsonString(querys), request.getRemoteAddr(), this.getUid(request));
+            logService.addLog(LogActions.SYS_SETTING.getAction(), objectMapper.writeValueAsString(querys), request.getRemoteAddr(), this.getUid(request));
             return APIResponse.success();
         } catch (Exception e) {
             String msg = "保存设置失败";

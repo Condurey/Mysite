@@ -20,6 +20,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -36,6 +37,13 @@ public class HomeController extends BaseController {
     @Autowired
     private SiteService siteService;
 
+    @ApiIgnore
+    @GetMapping(value = {"/about", "/about/index"})
+    public String getAbout(HttpServletRequest request) {
+        this.blogBaseData(request);//获取友链
+        request.setAttribute("active", "about");
+        return "site/about";
+    }
 
     @ApiOperation("blog首页")
     @ApiImplicitParams(value = {
@@ -81,7 +89,7 @@ public class HomeController extends BaseController {
         request.setAttribute("article", atricle);
         ContentQuery contentQuery = new ContentQuery();
         contentQuery.setType(Types.ARTICLE.getType());
-//        this.blogBaseData(request, contentCond);//获取公共分类标签等数据
+        this.blogBaseData(request);//获取公共分类标签等数据
         //更新文章的点击量
 //        this.updateArticleHit(atricle.getCid(),atricle.getHits());
         List<Comment> commentsPaginator = commentService.getCommentsByCId(cid);
@@ -100,15 +108,15 @@ public class HomeController extends BaseController {
                            HttpServletRequest request
     ) {
         ContentQuery contentQuery = new ContentQuery();
-//        Date sd = DateKit.dateFormat(date, "yyyy年MM月");
-//        int start = DateKit.getUnixTimeByDate(sd);
-//        int end = DateKit.getUnixTimeByDate(DateKit.dateAdd(DateKit.INTERVAL_MONTH, sd, 1)) - 1;
+//        Date sd = DateUtils.dateFormat(date, "yyyy年MM月");
+//        int start = DateUtils.getUnixTimeByDate(sd);
+//        int end = DateUtils.getUnixTimeByDate(DateUtils.dateAdd(DateUtils.INTERVAL_MONTH, sd, 1)) - 1;
 //        contentQuery.setStartTime(start);
 //        contentQuery.setEndTime(end);
         contentQuery.setType(Types.ARTICLE.getType());
         List<ArchiveDto> archives = siteService.getArchives(contentQuery);
         request.setAttribute("archives_list", archives);
-//        this.blogBaseData(request, contentCond);//获取公共分类标签等数据
+        this.blogBaseData(request);//获取公共分类标签等数据
         return "blog/archives";
     }
 
@@ -119,7 +127,7 @@ public class HomeController extends BaseController {
         contentQuery.setType(Types.ARTICLE.getType());
         List<ArchiveDto> archives = siteService.getArchives(contentQuery);
         request.setAttribute("archives_list", archives);
-//        this.blogBaseData(request,contentCond);//获取公共分类标签等数据
+        this.blogBaseData(request);//获取公共分类标签等数据
         return "blog/archives";
     }
 
@@ -150,7 +158,7 @@ public class HomeController extends BaseController {
         contentCond.setType(Types.ARTICLE.getType());
         contentCond.setCategory(category);
         PageInfo<Content> articles = contentService.getArticlesByCond(contentCond, page, limit);
-//        this.blogBaseData(request,contentCond);//获取公共分类标签等数据
+        this.blogBaseData(request);//获取公共分类标签等数据
         request.setAttribute("articles_list", articles);
         request.setAttribute("type", "categories");
         request.setAttribute("param_name", category);

@@ -11,10 +11,7 @@ import org.springframework.stereotype.Component;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -308,7 +305,7 @@ public class Commons {
     public static String gravatar(String email) {
         String avatarUrl = "https://github.com/identicons/";
         if (StringUtils.isBlank(email)) {
-            email = "user@hanshuai.xin";
+            email = "Condurey";
         }
         String hash = EncryptUtils.MD5encode(email.trim().toLowerCase());
         return avatarUrl + hash + ".png";
@@ -456,85 +453,88 @@ public class Commons {
 
     /**
      * 获取文章中的所有图片
+     *
      * @param content
      * @return
      */
-//    public static List<String> show_all_thumb(String content) {
-//        List<String> rs = new LinkedList();
-//        content = TaleUtils.mdToHtml(content);
-//        if (content.contains("<img")) {
-//            String img = "";
-//            String regEx_img = "<[a-zA-Z]+.*?>([\\s\\S]*?)</[a-zA-Z]*>";
-//            Pattern p_image = Pattern.compile(regEx_img, Pattern.MULTILINE);
-//            Matcher m_image = p_image.matcher(content);
-//            while (m_image.find()) {
-//                String data = m_image.group(1).trim();
-//                if(!"".equals(data) && data.contains("<img")) {
-//                    System.out.println(data);
-//                    // //匹配src
-//                    Matcher m = Pattern.compile("src\\s*=\\s*\'?\"?(.*?)(\'|\"|>|\\s+)").matcher(data);
-//                    if (m.find()) {
-//                        rs.add(m.group(1));
-//                    }
-//                }
-//
-//            }
-//        }
-//        return rs;
-//    }
+    public static List<String> show_all_thumb(String content) {
+        List<String> rs = new LinkedList();
+        content = BlogUtils.mdToHtml(content);
+        if (content.contains("<img")) {
+            String img = "";
+            String regEx_img = "<[a-zA-Z]+.*?>([\\s\\S]*?)</[a-zA-Z]*>";
+            Pattern p_image = Pattern.compile(regEx_img, Pattern.MULTILINE);
+            Matcher m_image = p_image.matcher(content);
+            while (m_image.find()) {
+                String data = m_image.group(1).trim();
+                if (!"".equals(data) && data.contains("<img")) {
+                    System.out.println(data);
+                    // //匹配src
+                    Matcher m = Pattern.compile("src\\s*=\\s*\'?\"?(.*?)(\'|\"|>|\\s+)").matcher(data);
+                    if (m.find()) {
+                        rs.add(m.group(1));
+                    }
+                }
+
+            }
+        }
+        return rs;
+    }
 
     /**
      * 获取文章的文字预览
+     *
      * @param content
      * @return
      */
-//    public static String show_p(String content){
-//        String result = "";
-//        content = TaleUtils.mdToHtml(content);
-//        String reg = "<[a-zA-Z]+.*?>([\\s\\S]*?)</[a-zA-Z]*>";
-//
-//        Pattern p = Pattern.compile(reg, Pattern.MULTILINE);
-//        content = content.replace("&nbsp;", "");
-//        Matcher m = p.matcher(content);
-//        if (m.find()) {
-//            String data = m.group(1).trim();
-//            if(!"".equals(data) && !data.contains("<img")) {
-//                System.out.println(data);
-//                result = data;
-//            }
-//        }
-//        result = result.replace("<img>","");
-//        result = result.replace("</img>","");
-//        result = result.replace("<p>","");
-//        result = result.replace("</p>","");
-//        if (result.length() > 20)
-//            result = result.substring(0, 20);
-//        return result;
-//    }
+    public static String show_p(String content) {
+        String result = "";
+        content = BlogUtils.mdToHtml(content);
+        String reg = "<[a-zA-Z]+.*?>([\\s\\S]*?)</[a-zA-Z]*>";
+
+        Pattern p = Pattern.compile(reg, Pattern.MULTILINE);
+        content = content.replace("&nbsp;", "");
+        Matcher m = p.matcher(content);
+        if (m.find()) {
+            String data = m.group(1).trim();
+            if (!"".equals(data) && !data.contains("<img")) {
+                System.out.println(data);
+                result = data;
+            }
+        }
+        result = result.replace("<img>", "");
+        result = result.replace("</img>", "");
+        result = result.replace("<p>", "");
+        result = result.replace("</p>", "");
+        if (result.length() > 20)
+            result = result.substring(0, 20);
+        return result;
+    }
 
     /**
      * 获取文章中所有的文字
+     *
      * @param content
      * @return
      */
-//    public static List<String> show_all_p(String content){
-//        List<String> rs = new LinkedList();
-//        content = TaleUtils.mdToHtml(content);
-//        String reg = "<[a-zA-Z]+.*?>([\\s\\S]*?)</[a-zA-Z]*>";
-//
-//        Pattern p = Pattern.compile(reg, Pattern.MULTILINE);
-//        content = content.replace("&nbsp;", "");
-//        Matcher m = p.matcher(content);
-//        while(m.find()) {
-//            String data = m.group(1).trim();
-//            if(!"".equals(data) && !data.contains("<img")) {
-//                System.out.println(data);
-//                data = "<p>" + data + "</p>";
-//                rs.add(data);
-//            }
-//        }
-//        return rs;
-//    }
+    public static List<String> show_all_p(String content) {
+        List<String> rs = new LinkedList();
+        content = BlogUtils.mdToHtml(content);
+        String reg = "<[a-zA-Z]+.*?>([\\s\\S]*?)</[a-zA-Z]*>";
+
+        Pattern p = Pattern.compile(reg, Pattern.MULTILINE);
+        content = content.replace("&nbsp;", "");
+        Matcher m = p.matcher(content);
+        while (m.find()) {
+            String data = m.group(1).trim();
+            if (!"".equals(data) && !data.contains("<img")) {
+                System.out.println(data);
+                data = "<p>" + data + "</p>";
+                rs.add(data);
+            }
+        }
+        return rs;
+    }
 
     /**
      * 显示分类

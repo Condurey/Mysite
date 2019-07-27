@@ -18,6 +18,9 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 自定义拦截器
@@ -65,7 +68,10 @@ public class BaseInterceptor implements HandlerInterceptor {
                 request.getSession().setAttribute(WebConst.LOGIN_SESSION_KEY, user);
             }
         }
-        if (uri.startsWith("/admin") && !uri.startsWith("/admin/login") && null == user) {
+        if (uri.startsWith("/admin") && !uri.startsWith("/admin/login") && null == user
+                && !uri.startsWith("/admin/css") && !uri.startsWith("/admin/images")
+                && !uri.startsWith("/admin/js") && !uri.startsWith("/admin/plugins")
+                && !uri.startsWith("/admin/editormd")) {
             response.sendRedirect(request.getContextPath() + "/admin/login");
             return false;
         }
@@ -85,6 +91,18 @@ public class BaseInterceptor implements HandlerInterceptor {
         httpServletRequest.setAttribute("commons", commons);//一些工具类和公共方法
         httpServletRequest.setAttribute("option", option);
         httpServletRequest.setAttribute("adminCommons", adminCommons);
+        initSiteConfig(httpServletRequest);
+    }
+
+    private void initSiteConfig(HttpServletRequest request) {
+        if (WebConst.initConfig.isEmpty()) {
+            List<Option> options = optionService.getOptions();
+            Map<String, String> querys = new HashMap<>();
+            options.forEach(option -> {
+                querys.put(option.getName(), option.getValue());
+            });
+            WebConst.initConfig = querys;
+        }
     }
 
 //    @Override
