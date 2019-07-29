@@ -21,6 +21,18 @@ import java.util.regex.Pattern;
 @Component
 public class Commons {
 
+    private static final String[] ICONS = {"bg-ico-book", "bg-ico-game", "bg-ico-note", "bg-ico-chat", "bg-ico-code", "bg-ico-image", "bg-ico-web", "bg-ico-link", "bg-ico-design", "bg-ico-lock"};
+
+    /**
+     * 显示文章图标
+     *
+     * @param cid
+     * @return
+     */
+    public static String show_icon(int cid) {
+        return ICONS[cid % ICONS.length];
+    }
+
 
     /**
      * 网站链接
@@ -449,6 +461,19 @@ public class Commons {
         }
         return "";
     }
+
+    /**
+     * 显示文章缩略图，顺序为：文章第一张图 -> 随机获取
+     *
+     * @return
+     */
+    public static String show_thumb(Content content) {
+        int cid = content.getCid();
+        int size = cid % 12;
+        size = size == 0 ? 1 : size;
+        return "/site/images/blog-images/blog-" + size + ".jpg";
+    }
+
 
     /**
      * 获取文章中的所有图片

@@ -255,7 +255,7 @@ public class HomeController extends BaseController {
         ContentQuery contentCond = new ContentQuery();
         contentCond.setType(Types.PHOTO.getType());
         PageInfo<Content> articles = contentService.getArticlesByCond(contentCond, page, limit);
-        request.setAttribute("archives", articles);
+        request.setAttribute("articles", articles);
         request.setAttribute("active", "work");
         return "site/index";
     }
