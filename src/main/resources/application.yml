@@ -65,6 +65,20 @@ spring:
       allow_unquoted_control_chars: true
       #允许出现单引号
       allow_single_quotes: true
+  #邮箱配置
+  mail:
+    host: smtp.163.com
+    username: condurey@163.com
+    #QQ邮箱需填写授权码
+    password: Test@123456
+    default-encoding: UTF-8
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
 
 
 mybatis:
@@ -87,9 +101,9 @@ logging:
 swagger:
   show: true
 
-qiniu:
-  accesskey: ""
-  serectkey: ""
-  bucket: ""
-  cdn:
-    url: ""
+#qiniu:
+#  accesskey: ""
+#  serectkey: ""
+#  bucket: ""
+#  cdn:
+#    url: ""

@@ -3,6 +3,7 @@ package com.mysite.model.bo;
 
 import com.mysite.model.po.Comment;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
@@ -11,6 +12,7 @@ import java.util.List;
  * Created by 13 on 2017/2/24.
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class CommentBo extends Comment {
 
     private int levels;

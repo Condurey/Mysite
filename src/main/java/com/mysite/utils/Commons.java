@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -43,18 +42,18 @@ public class Commons {
     }
 
 
-    /**
-     * 文件上传，为文件重新命名
-     **/
-    public static String getFileRename(String name) {
-        Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
-        String sdfDate = sdf.format(date);
-        int pos = name.lastIndexOf(".");
-        String suffix = name.substring(pos);
-        String rename = sdfDate + suffix;
-        return rename;
-    }
+//    /**
+//     * 文件上传，为文件重新命名
+//     **/
+//    public static String getFileRename(String name) {
+//        Date date = new Date();
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+//        String sdfDate = sdf.format(date);
+//        int pos = name.lastIndexOf(".");
+//        String suffix = name.substring(pos);
+//        String rename = sdfDate + suffix;
+//        return rename;
+//    }
 
     /**
      * 获取网站的描述
