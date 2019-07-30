@@ -92,8 +92,10 @@ public class HomeController extends BaseController {
         this.blogBaseData(request);//获取公共分类标签等数据
         //更新文章的点击量
 //        this.updateArticleHit(atricle.getCid(),atricle.getHits());
-        List<Comment> commentsPaginator = commentService.getCommentsByCId(cid);
-        request.setAttribute("comments", commentsPaginator);
+        List<Comment> comments = commentService.getCommentsByCId(cid);
+        if (null != comments && comments.size() > 0) {
+            request.setAttribute("comments", comments);
+        }
         request.setAttribute("active", "blog");
         return "site/blog-details";
 
@@ -273,6 +275,24 @@ public class HomeController extends BaseController {
         request.setAttribute("archive", article);
         request.setAttribute("active", "work");
         return "site/works-details";
+    }
+
+    /**
+     * 抽取公共方法
+     *
+     * @param Content
+     * @param request
+     */
+    private void completeArticle(Content Content, HttpServletRequest request) {
+        if (Content.getAllowComment()) {
+//            String cp = request.getParameter("cp");
+//            if (StringUtils.isBlank(cp)) {
+//                cp = "1";
+//            }
+//            request.setAttribute("cp", cp);
+            List<Comment> comments = commentService.getCommentsByCId(Content.getCid());
+            request.setAttribute("comments", comments);
+        }
     }
 
 }

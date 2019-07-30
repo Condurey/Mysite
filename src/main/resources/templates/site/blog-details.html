@@ -1,69 +1,32 @@
-<!DOCTYPE HTML>
-
+<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<div th:replace="site/head::head(${article.title},${commons.google_site_verification()}, ${commons.baidu_site_verification()})"></div>
-
-
+<div th:replace="site/header::header(${article.title},${article.tags})"></div>
 <body>
-
-
-<!-- header -->
-
-<div th:replace="site/header::header"></div>
-
-<!-- header -->
-
-<!-- main -->
-
-<main role="main-inner-wrapper" class="container">
-
-
-    <div class="blog-details">
-
-        <article class="post-details" id="post-details">
-
-            <header role="bog-header" class="bog-header text-center">
-
-                <h3>
-                    <th:block th:utext="${commons.fmtdate_en(article.created)}"></th:block>
-                </h3>
-
-                <h2>
-                    <th:block th:text="${article.title}"></th:block>
-                </h2>
-
-            </header>
-
-
-            <figure>
-
-                <img src="images/blog-images/blog-details-image.jpg" alt="" class="img-responsive"/>
-
-            </figure>
-
-            <div id="post-content" class="post-content" itemprop="articleBody">
-                <th:block th:utext="${commons.article(article.content)}"></th:block>
-            </div>
-
-
-        </article>
-
-
-        <!-- Comments -->
-        <div th:replace="site/comments::comments"></div>
-
-
+<article class="main-content post-page" itemscope="" itemtype="http://schema.org/Article">
+    <div class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            <a data-no-instant="" th:href="${commons.permalink(article)}" th:text="${article.title}"></a>
+        </h1>
+        <div class="post-data">
+            <time itemprop="datePublished" th:datetime="${commons.fmtdate(article.created)}"
+                  th:text="'发布于 '+ ${commons.fmtdate(article.created)}"></time>
+            /
+            <th:block th:utext="${commons.show_categories(article.categories)}"/>
+            / <a href="#comments" th:text="${article.commentsNum ?: 0}+' 条评论'"></a> /
+            <th:block th:text="${article.hits}"/>
+            浏览
+        </div>
     </div>
-
-
-</main>
-
-<!-- main -->
-
-<!-- footer -->
-
-<div th:replace="site/footer::footer(${commons.site_title()},${commons.site_record()},${commons.site_url()})"></div>
-
+    <div class="post-content" id="post-content" itemprop="articleBody">
+        <p class="post-tags" th:utext="${commons.show_tags(article.tags)}"></p>
+        <th:block th:utext="${commons.article(article.content)}"/>
+        <p class="post-info">
+            本站文章除注明转载/出处外，均为本站原创或翻译，转载前请务必署名,转载请标明出处<br/>最后编辑时间为:
+            <th:block th:text="${commons.fmtdate(article.modified, 'yyyy/MM/dd HH:mm')}"/>
+        </p>
+    </div>
+</article>
+<div th:replace="site/comments::comments"></div>
+<div th:replace="site/footer::footer"></div>
 </body>
-<div th:replace="comm/tale_comment::tale_comment"></div>
 </html>

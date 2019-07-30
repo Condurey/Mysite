@@ -1,8 +1,6 @@
-<!DOCTYPE HTML>
-
+<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<div th:replace="site/head::head(${commons.site_title()},${commons.google_site_verification()}, ${commons.baidu_site_verification()})"></div>
-
+<div th:replace="site/header::header(null,null)"></div>
 <body>
 <div class="main-content index-page clearfix">
   <div class="post-lists">
@@ -16,12 +14,12 @@
           <div class="item-slant reverse-slant &lt; bg-deepgrey"></div>
           <div class="item-slant"></div>
           <div class="item-label">
-            <div class="item-title"><a th:href="${commons.permalink(article)}"
-                                       th:text="${article.title}"></a>
+              <div class="item-title"><a th:href="${commons.blogPermalink(article.cid)}"
+                                         th:text="${article.title}"></a>
             </div>
             <div class="item-meta clearfix">
-              <div th:class="'item-meta-ico '+ ${commons.show_icon(article.cid)}"
-                   th:style="'background: url('+@{/user/img/bg-ico.png}+');no-repeat;background-size: 40px auto;' "></div>
+                <div th:class="'item-meta-ico '+ ${commons.blogPermalink(article.cid)}"
+                     th:style="'background: url('+@{/site/images/bg-ico.png}+');no-repeat;background-size: 40px auto;' "></div>
               <div class="item-meta-cat" th:utext="${commons.show_categories(article.categories)}">
               </div>
             </div>
@@ -34,11 +32,6 @@
     <div th:replace="comm/macros::pageNav(${articles},'←','→','page')"></div>
   </div>
 </div>
-
-<!-- main --> 
-
-<!-- footer -->
-<div th:replace="site/footer::footer(${commons.site_title()},${commons.site_record()},${commons.site_url()})"></div>
-
 </body>
+<div th:replace="site/footer::footer"></div>
 </html>
