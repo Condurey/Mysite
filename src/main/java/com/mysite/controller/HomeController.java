@@ -71,9 +71,12 @@ public class HomeController extends BaseController {
         contentQuery.setType(Types.ARTICLE.getType());
         PageInfo<Content> articles = contentService.getArticlesByCond(contentQuery, page, limit);
         request.setAttribute("articles", articles);//文章列表
-        request.setAttribute("type", "articles");
-        request.setAttribute("active", "blog");
-        this.blogBaseData(request);//获取公共分类标签等数据
+        if (page > 1) {
+            this.title(request, "第" + page + "页");
+        }
+//        request.setAttribute("type", "articles");
+//        request.setAttribute("active", "blog");
+//        this.blogBaseData(request);//获取公共分类标签等数据
         return "site/blog";
     }
 
@@ -89,14 +92,15 @@ public class HomeController extends BaseController {
         request.setAttribute("article", atricle);
         ContentQuery contentQuery = new ContentQuery();
         contentQuery.setType(Types.ARTICLE.getType());
-        this.blogBaseData(request);//获取公共分类标签等数据
+//        this.blogBaseData(request);//获取公共分类标签等数据
         //更新文章的点击量
 //        this.updateArticleHit(atricle.getCid(),atricle.getHits());
         List<Comment> comments = commentService.getCommentsByCId(cid);
         if (null != comments && comments.size() > 0) {
             request.setAttribute("comments", comments);
         }
-        request.setAttribute("active", "blog");
+        request.setAttribute("is_post", true);
+//        request.setAttribute("active", "blog");
         return "site/blog-details";
 
     }
