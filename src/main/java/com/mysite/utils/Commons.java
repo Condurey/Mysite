@@ -356,7 +356,7 @@ public class Commons {
      * @return
      */
     public static String permalink(Integer cid, String slug) {
-        return site_url("/article/" + (StringUtils.isNotBlank(slug) ? slug : cid.toString()));
+        return site_url("/blog/article/" + (StringUtils.isNotBlank(slug) ? slug : cid.toString()));
     }
 
     /**
@@ -381,16 +381,6 @@ public class Commons {
             return str.substring(0, len);
         }
         return str;
-    }
-
-    /**
-     * 返回作品文章地址
-     *
-     * @param cid
-     * @return
-     */
-    public static String photoPermalink(Integer cid) {
-        return site_url("/photo/article/" + cid.toString());
     }
 
     /**

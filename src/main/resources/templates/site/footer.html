@@ -130,8 +130,12 @@
                         } else if (level < 0) {
                             level *= 2;
                             while (level++) {
-                                if (level % 2) dirNum.pop();
-                                currentList = currentList.parentNode;
+                                if (level % 2) {
+                                    dirNum.pop();
+                                }
+                                if (null != currentList.parentNode) {
+                                    currentList = currentList.parentNode;
+                                }
                             }
                         }
                         dirNum[dirNum.length - 1]++;

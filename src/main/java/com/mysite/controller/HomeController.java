@@ -4,6 +4,8 @@ package com.mysite.controller;
 import com.github.pagehelper.PageInfo;
 import com.mysite.constant.Types;
 import com.mysite.constant.WebConst;
+import com.mysite.exception.BusinessException;
+import com.mysite.interceptor.AuthService;
 import com.mysite.model.dto.ArchiveDto;
 import com.mysite.model.dto.MetaDto;
 import com.mysite.model.po.Comment;
@@ -15,18 +17,24 @@ import com.mysite.service.CommentService;
 import com.mysite.service.ContentService;
 import com.mysite.service.MetaService;
 import com.mysite.service.SiteService;
+import com.mysite.utils.APIResponse;
+import com.mysite.utils.BlogUtils;
+import com.mysite.utils.PatternUtils;
+import com.vdurmont.emoji.EmojiParser;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.net.URLEncoder;
 import java.util.List;
 
 @Api("网站首页和关于页面")
@@ -44,11 +52,12 @@ public class HomeController extends BaseController {
     @Autowired
     private MetaService metaService;
 
+    @Autowired
+    private AuthService authService;
+
     @ApiIgnore
     @GetMapping(value = {"/blog/about"})
     public String getAbout(HttpServletRequest request) {
-        this.blogBaseData(request);//获取友链
-//        request.setAttribute("active", "about");
         return "site/about";
     }
 
@@ -81,9 +90,6 @@ public class HomeController extends BaseController {
         if (page > 1) {
             this.title(request, "第" + page + "页");
         }
-//        request.setAttribute("type", "articles");
-//        request.setAttribute("active", "blog");
-//        this.blogBaseData(request);//获取公共分类标签等数据
         return "site/index";
     }
 
@@ -97,9 +103,6 @@ public class HomeController extends BaseController {
     ) {
         Content atricle = contentService.getAtricleById(cid);
         request.setAttribute("article", atricle);
-//        ContentQuery contentQuery = new ContentQuery();
-//        contentQuery.setType(Types.ARTICLE.getType());
-//        this.blogBaseData(request);//获取公共分类标签等数据
         //更新文章的点击量
 //        this.updateArticleHit(atricle.getCid(),atricle.getHits());
         List<Comment> comments = commentService.getCommentsByCId(cid);
@@ -107,9 +110,92 @@ public class HomeController extends BaseController {
             request.setAttribute("comments", comments);
         }
         request.setAttribute("is_post", true);
-//        request.setAttribute("active", "blog");
         return "site/blog-details";
 
+    }
+
+    /**
+     * 评论操作
+     */
+    @PostMapping(value = "/blog/comment")
+    @ResponseBody
+    @Transactional(rollbackFor = BusinessException.class)
+    public APIResponse comment(@RequestParam Integer cid, @RequestParam Integer coid,
+                               @RequestParam String author, @RequestParam String mail,
+                               @RequestParam String url, @RequestParam String text,
+                               @RequestParam String _csrf_token,
+                               HttpServletRequest request,
+                               HttpServletResponse response) {
+
+        String ref = request.getHeader("Referer");
+        if (StringUtils.isBlank(ref) || StringUtils.isBlank(_csrf_token)) {
+            return APIResponse.fail("非法请求");
+        }
+
+//        String token = cache.hget(Types.CSRF_TOKEN.getType(), _csrf_token);
+//        if (StringUtils.isBlank(token)) {
+//            return APIResponse.fail(ErrorCode.BAD_REQUEST);
+//        }
+
+        if (null == cid || StringUtils.isBlank(text)) {
+            return APIResponse.fail("请输入完整后评论");
+        }
+
+        if (StringUtils.isNotBlank(author) && author.length() > 50) {
+            return APIResponse.fail("姓名过长");
+        }
+
+        if (StringUtils.isNotBlank(mail) && !PatternUtils.isEmail(mail)) {
+            return APIResponse.fail("请输入正确的邮箱格式");
+        }
+
+        if (StringUtils.isNotBlank(url) && !PatternUtils.isURL(url)) {
+            return APIResponse.fail("请输入正确的URL格式");
+        }
+
+        if (text.length() > 200) {
+            return APIResponse.fail("请输入200个字符以内的评论");
+        }
+
+        String val = authService.getIpAddrByRequest(request) + ":" + cid;
+//        Integer count = cache.hget(Types.COMMENTS_FREQUENCY.getType(), val);
+//        if (null != count && count > 0) {
+//            return APIResponse.fail("您发表评论太快了，请过会再试");
+//        }
+
+        author = BlogUtils.cleanXSS(author);
+        text = BlogUtils.cleanXSS(text);
+
+        author = EmojiParser.parseToAliases(author);
+        text = EmojiParser.parseToAliases(text);
+
+        Comment comment = new Comment();
+        comment.setAuthor(author);
+        comment.setCid(cid);
+        comment.setIp(request.getRemoteAddr());
+        comment.setUrl(url);
+        comment.setContent(text);
+        comment.setMail(mail);
+        comment.setParent(coid);
+        try {
+            commentService.addComment(comment);
+            authService.setCookie("tale_remember_author", URLEncoder.encode(author, "UTF-8"), 7 * 24 * 60 * 60, response);
+            authService.setCookie("tale_remember_mail", URLEncoder.encode(mail, "UTF-8"), 7 * 24 * 60 * 60, response);
+            if (StringUtils.isNotBlank(url)) {
+                authService.setCookie("tale_remember_url", URLEncoder.encode(url, "UTF-8"), 7 * 24 * 60 * 60, response);
+            }
+            // 设置对每个文章1分钟可以评论一次
+//            cache.hset(Types.COMMENTS_FREQUENCY.getType(), val, 1, 60);
+            return APIResponse.success();
+        } catch (Exception e) {
+            String msg = "评论发布失败";
+            if (e instanceof BusinessException) {
+                msg = e.getMessage();
+            } else {
+//                LOGGER.error(msg, e);
+            }
+            return APIResponse.fail(msg);
+        }
     }
 
     @ApiOperation("归档页")
