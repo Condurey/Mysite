@@ -21,9 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Donghua.Chen on 2018/4/29.
@@ -188,6 +186,11 @@ public class MetaServiceImpl implements MetaService {
     }
 
     @Override
+    public MetaDto getMetaByQuery(MetaQuery metaQuery) {
+        return metaDao.getMetaByQuery(metaQuery);
+    }
+
+    @Override
     @Cacheable(value = "metaCaches", key = "'metas_' + #p0")
     public List<Meta> getMetas(MetaQuery metaQuery) {
         return metaDao.getMetasByCond(metaQuery);
@@ -196,19 +199,20 @@ public class MetaServiceImpl implements MetaService {
 
     @Override
     @Cacheable(value = "metaCaches", key = "'metaList_' + #p0")
-    public List<MetaDto> getMetaList(String type, String orderby, int limit) {
+    public List<MetaDto> getMetaList(String type, String order, int limit) {
         if (StringUtils.isNotBlank(type)) {
-            if (StringUtils.isBlank(orderby)) {
-                orderby = "count desc, a.mid desc";
+            if (StringUtils.isBlank(order)) {
+                order = "count desc, a.mid desc";
             }
             if (limit < 1 || limit > WebConst.MAX_POSTS) {
                 limit = 10;
             }
-            Map<String, Object> paraMap = new HashMap<>();
-            paraMap.put("type", type);
-            paraMap.put("order", orderby);
-            paraMap.put("limit", limit);
-            return metaDao.selectFromSql(paraMap);
+            MetaQuery metaQuery = new MetaQuery();
+            metaQuery.setType(type);
+            metaQuery.setOrder(order);
+            metaQuery.setLimit(limit);
+
+            return metaDao.selectFromSql(metaQuery);
         }
         return null;
     }

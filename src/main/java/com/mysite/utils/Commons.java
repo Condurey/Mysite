@@ -340,11 +340,11 @@ public class Commons {
     /**
      * 返回文章链接地址
      *
-     * @param contents
+     * @param content
      * @return
      */
-    public static String permalink(Content contents) {
-        return permalink(contents.getCid(), contents.getSlug());
+    public static String permalink(Content content) {
+        return permalink(content.getCid(), content.getSlug());
     }
 
 

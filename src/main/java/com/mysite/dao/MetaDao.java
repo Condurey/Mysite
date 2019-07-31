@@ -7,7 +7,6 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * 项目dao
@@ -48,6 +47,14 @@ public interface MetaDao {
      */
     Meta getMetaById(@Param("mid") Integer mid);
 
+    /**
+     * 根据条件查询单条meta记录
+     *
+     * @param metaQuery
+     * @return
+     */
+    MetaDto getMetaByQuery(MetaQuery metaQuery);
+
 
     /**
      * 根据条件查询
@@ -68,9 +75,9 @@ public interface MetaDao {
     /**
      * 根据sql查询
      *
-     * @param paraMap
+     * @param metaQuery
      * @return
      */
-    List<MetaDto> selectFromSql(Map<String, Object> paraMap);
+    List<MetaDto> selectFromSql(MetaQuery metaQuery);
 
 }

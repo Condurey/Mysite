@@ -16,6 +16,7 @@ import com.mysite.model.po.Comment;
 import com.mysite.model.po.Content;
 import com.mysite.model.query.CommentQuery;
 import com.mysite.model.query.ContentQuery;
+import com.mysite.model.query.MetaQuery;
 import com.mysite.service.SiteService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -24,9 +25,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 站点服务
@@ -147,23 +146,23 @@ public class SiteServiceImpl implements SiteService {
 
     @Override
     @Cacheable(value = "siteCache", key = "'metas_' + #p0")
-    public List<MetaDto> getMetas(String type, String orderBy, int limit) {
-        LOGGER.debug("Enter metas method:type={},order={},limit={}", type, orderBy, limit);
-        List<MetaDto> retList = null;
+    public List<MetaDto> getMetas(String type, String order, int limit) {
+        LOGGER.debug("Enter metas method:type={},order={},limit={}", type, order, limit);
+        List<MetaDto> metas = null;
         if (StringUtils.isNotBlank(type)) {
-            if (StringUtils.isBlank(orderBy)) {
-                orderBy = "count desc, a.mid desc";
+            if (StringUtils.isBlank(order)) {
+                order = "count desc, a.mid desc";
             }
             if (limit < 1 || limit > WebConst.MAX_POSTS) {
                 limit = 10;
             }
-            Map<String, Object> paraMap = new HashMap<>();
-            paraMap.put("type", type);
-            paraMap.put("order", orderBy);
-            paraMap.put("limit", limit);
-            retList = metaDao.selectFromSql(paraMap);
+            MetaQuery metaQuery = new MetaQuery();
+            metaQuery.setType(type);
+            metaQuery.setOrder(order);
+            metaQuery.setLimit(limit);
+            metas = metaDao.selectFromSql(metaQuery);
         }
         LOGGER.debug("Exit metas method");
-        return retList;
+        return metas;
     }
 }

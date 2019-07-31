@@ -73,6 +73,14 @@ public interface MetaService {
     Meta getMetaById(Integer mid);
 
     /**
+     * 根据查询条件获取项目
+     *
+     * @param metaQuery
+     * @return
+     */
+    MetaDto getMetaByQuery(MetaQuery metaQuery);
+
+    /**
      * 获取所有的项目
      *
      * @param metaQuery 查询条件

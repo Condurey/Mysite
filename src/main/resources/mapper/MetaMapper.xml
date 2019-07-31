@@ -96,21 +96,22 @@
         WHERE type = #{type, jdbcType=VARCHAR}
     </select>
 
-    <resultMap id="BaseResultMap" type="com.mysite.model.po.Meta">
-        <id column="mid" jdbcType="INTEGER" property="mid" />
-        <result column="name" jdbcType="VARCHAR" property="name" />
-        <result column="slug" jdbcType="VARCHAR" property="slug" />
-        <result column="type" jdbcType="VARCHAR" property="type" />
-        <result column="description" jdbcType="VARCHAR" property="description" />
-        <result column="sort" jdbcType="INTEGER" property="sort" />
-        <result column="parent" jdbcType="INTEGER" property="parent" />
-    </resultMap>
+    <!--    <resultMap id="BaseResultMap" type="com.mysite.model.po.Meta">-->
+    <!--        <id column="mid" jdbcType="INTEGER" property="mid" />-->
+    <!--        <result column="name" jdbcType="VARCHAR" property="name" />-->
+    <!--        <result column="slug" jdbcType="VARCHAR" property="slug" />-->
+    <!--        <result column="type" jdbcType="VARCHAR" property="type" />-->
+    <!--        <result column="description" jdbcType="VARCHAR" property="description" />-->
+    <!--        <result column="sort" jdbcType="INTEGER" property="sort" />-->
+    <!--        <result column="parent" jdbcType="INTEGER" property="parent" />-->
+    <!--    </resultMap>-->
 
-    <resultMap id="MetaDto" type="com.mysite.model.dto.MetaDto" extends="BaseResultMap">
-        <result column="count" property="count" jdbcType="INTEGER"/>
-    </resultMap>
+    <!--    <resultMap id="MetaDto" type="com.mysite.model.dto.MetaDto" extends="BaseResultMap">-->
+    <!--        <result column="count" property="count" jdbcType="INTEGER"/>-->
+    <!--    </resultMap>-->
 
-    <select id="selectFromSql" resultMap="MetaDto" parameterType="Map">
+    <select id="selectFromSql" resultType="com.mysite.model.dto.MetaDto"
+            parameterType="com.mysite.model.query.MetaQuery">
         select
             a.*,
             count(b.cid) as count

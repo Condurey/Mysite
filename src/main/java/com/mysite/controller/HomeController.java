@@ -5,11 +5,15 @@ import com.github.pagehelper.PageInfo;
 import com.mysite.constant.Types;
 import com.mysite.constant.WebConst;
 import com.mysite.model.dto.ArchiveDto;
+import com.mysite.model.dto.MetaDto;
 import com.mysite.model.po.Comment;
 import com.mysite.model.po.Content;
+import com.mysite.model.po.Meta;
 import com.mysite.model.query.ContentQuery;
+import com.mysite.model.query.MetaQuery;
 import com.mysite.service.CommentService;
 import com.mysite.service.ContentService;
+import com.mysite.service.MetaService;
 import com.mysite.service.SiteService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -37,11 +41,14 @@ public class HomeController extends BaseController {
     @Autowired
     private SiteService siteService;
 
+    @Autowired
+    private MetaService metaService;
+
     @ApiIgnore
-    @GetMapping(value = {"/about", "/about/index"})
+    @GetMapping(value = {"/blog/about"})
     public String getAbout(HttpServletRequest request) {
         this.blogBaseData(request);//获取友链
-        request.setAttribute("active", "about");
+//        request.setAttribute("active", "about");
         return "site/about";
     }
 
@@ -49,7 +56,7 @@ public class HomeController extends BaseController {
     @ApiImplicitParams(value = {
             @ApiImplicitParam(name = "limit", value = "每页数量", paramType = "form", dataType = "int")
     })
-    @GetMapping(value = {"/blog/", "/blog/index"})
+    @GetMapping(value = {"/blog", "/blog/index"})
     public String blogIndex(HttpServletRequest request,
                             @RequestParam(name = "limit", required = false, defaultValue = "11") int limit
     ) {
@@ -77,7 +84,7 @@ public class HomeController extends BaseController {
 //        request.setAttribute("type", "articles");
 //        request.setAttribute("active", "blog");
 //        this.blogBaseData(request);//获取公共分类标签等数据
-        return "site/blog";
+        return "site/index";
     }
 
     @ApiOperation("文章内容页")
@@ -90,8 +97,8 @@ public class HomeController extends BaseController {
     ) {
         Content atricle = contentService.getAtricleById(cid);
         request.setAttribute("article", atricle);
-        ContentQuery contentQuery = new ContentQuery();
-        contentQuery.setType(Types.ARTICLE.getType());
+//        ContentQuery contentQuery = new ContentQuery();
+//        contentQuery.setType(Types.ARTICLE.getType());
 //        this.blogBaseData(request);//获取公共分类标签等数据
         //更新文章的点击量
 //        this.updateArticleHit(atricle.getCid(),atricle.getHits());
@@ -105,43 +112,35 @@ public class HomeController extends BaseController {
 
     }
 
-    @ApiOperation("归档页-按日期")
-    @ApiImplicitParams(value = {
-            @ApiImplicitParam(name = "date", value = "归档日期", paramType = "path", dataType = "String", required = true)
-    })
-    @GetMapping(value = "/blog/archives/{date}")
-    public String archives(@PathVariable("date") String date,
-                           HttpServletRequest request
-    ) {
-        ContentQuery contentQuery = new ContentQuery();
-//        Date sd = DateUtils.dateFormat(date, "yyyy年MM月");
-//        int start = DateUtils.getUnixTimeByDate(sd);
-//        int end = DateUtils.getUnixTimeByDate(DateUtils.dateAdd(DateUtils.INTERVAL_MONTH, sd, 1)) - 1;
-//        contentQuery.setStartTime(start);
-//        contentQuery.setEndTime(end);
-        contentQuery.setType(Types.ARTICLE.getType());
-        List<ArchiveDto> archives = siteService.getArchives(contentQuery);
-        request.setAttribute("archives_list", archives);
-        this.blogBaseData(request);//获取公共分类标签等数据
-        return "blog/archives";
-    }
-
     @ApiOperation("归档页")
-    @GetMapping(value = {"/blog/archives", "/blog/archives/index"})
+    @GetMapping(value = {"/blog/archives"})
     public String archives(HttpServletRequest request) {
         ContentQuery contentQuery = new ContentQuery();
         contentQuery.setType(Types.ARTICLE.getType());
         List<ArchiveDto> archives = siteService.getArchives(contentQuery);
-        request.setAttribute("archives_list", archives);
-        this.blogBaseData(request);//获取公共分类标签等数据
-        return "blog/archives";
+        request.setAttribute("archives", archives);
+        return "site/archives";
+    }
+
+    /**
+     * 友链页
+     *
+     * @return
+     */
+    @GetMapping(value = "/blog/links")
+    public String links(HttpServletRequest request) {
+        MetaQuery metaQuery = new MetaQuery();
+        metaQuery.setType(Types.LINK.getType());
+        List<Meta> links = metaService.getMetas(metaQuery);
+        request.setAttribute("links", links);
+        return "site/links";
     }
 
     @ApiOperation("分类")
     @ApiImplicitParams(value = {
             @ApiImplicitParam(name = "category", value = "分类名", paramType = "path", dataType = "String", required = true)
     })
-    @GetMapping(value = "/blog/categories/{category}")
+    @GetMapping(value = "/blog/category/{category}")
     public String categories(@PathVariable("category") String category,
                              HttpServletRequest request
     ) {
@@ -154,21 +153,23 @@ public class HomeController extends BaseController {
             @ApiImplicitParam(name = "page", value = "页数", paramType = "path", dataType = "int"),
             @ApiImplicitParam(name = "limit", value = "每页数量", paramType = "form", dataType = "int")
     })
-    @GetMapping(value = "/blog/categories/{category}/page/{page}")
+    @GetMapping(value = "/blog/category/{category}/page/{page}")
     public String categories(@PathVariable("category") String category,
                              @PathVariable("page") int page,
                              @RequestParam(name = "limit", required = false, defaultValue = "10") int limit,
                              HttpServletRequest request
     ) {
-        ContentQuery contentCond = new ContentQuery();
-        contentCond.setType(Types.ARTICLE.getType());
-        contentCond.setCategory(category);
-        PageInfo<Content> articles = contentService.getArticlesByCond(contentCond, page, limit);
-        this.blogBaseData(request);//获取公共分类标签等数据
-        request.setAttribute("articles_list", articles);
-        request.setAttribute("type", "categories");
-        request.setAttribute("param_name", category);
-        return "blog/categories";
+        MetaQuery metaQuery = new MetaQuery();
+        metaQuery.setType(Types.CATEGORY.getType());
+        metaQuery.setName(category);
+        MetaDto metaDto = metaService.getMetaByQuery(metaQuery);
+
+        PageInfo<Content> articles = contentService.getArticlesByCatalog(metaDto.getMid(), page, limit);
+        request.setAttribute("articles", articles);
+        request.setAttribute("meta", metaDto);
+        request.setAttribute("type", "分类");
+        request.setAttribute("category", category);
+        return "site/category";
 
     }
 
@@ -195,15 +196,17 @@ public class HomeController extends BaseController {
                        @RequestParam(name = "limit", required = false, defaultValue = "10") int limit,
                        HttpServletRequest request
     ) {
-        ContentQuery contentQuery = new ContentQuery();
-        contentQuery.setTag(tag);
-        contentQuery.setType(Types.ARTICLE.getType());
-        PageInfo<Content> articles = contentService.getArticlesByCond(contentQuery, page, limit);
-//        this.blogBaseData(request,contentCond);//获取公共分类标签等数据
-        request.setAttribute("articles_list", articles);
-        request.setAttribute("type", "tag");
-        request.setAttribute("param_name", tag);
-        return "blog/categories";
+        MetaQuery metaQuery = new MetaQuery();
+        metaQuery.setType(Types.TAG.getType());
+        metaQuery.setName(tag);
+        MetaDto metaDto = metaService.getMetaByQuery(metaQuery);
+
+        PageInfo<Content> articles = contentService.getArticlesByCatalog(metaDto.getMid(), page, limit);
+        request.setAttribute("articles", articles);
+        request.setAttribute("meta", metaDto);
+        request.setAttribute("type", "标签");
+        request.setAttribute("category", tag);
+        return "site/category";
     }
 
     @ApiOperation("搜索文章")
@@ -220,66 +223,23 @@ public class HomeController extends BaseController {
 
     @ApiOperation("搜索文章-分页")
     @ApiImplicitParams(value = {
-            @ApiImplicitParam(name = "param", value = "搜索的文字", paramType = "path", dataType = "String", required = true),
+            @ApiImplicitParam(name = "keyword", value = "搜索的文字", paramType = "path", dataType = "String", required = true),
             @ApiImplicitParam(name = "page", value = "页数", paramType = "path", dataType = "int", required = true),
             @ApiImplicitParam(name = "limit", value = "每页数量", paramType = "form", dataType = "int")
     })
-    @GetMapping(value = "/blog/search/{param}/page/{page}")
-    public String search(@PathVariable("param") String param,
+    @GetMapping(value = "/blog/search/{keyword}/page/{page}")
+    public String search(@PathVariable("keyword") String keyword,
                          @PathVariable("page") int page,
                          @RequestParam(name = "limit", required = false, defaultValue = "10") int limit,
                          HttpServletRequest request
     ) {
-        PageInfo<Content> pageInfo = contentService.searchArticle(param, page, limit);
-        ContentQuery contentQuery = new ContentQuery();
-        contentQuery.setType(Types.ARTICLE.getType());
-//        this.blogBaseData(request,contentCond);//获取公共分类标签等数据
-        request.setAttribute("articles", pageInfo);
-        request.setAttribute("type", "search");
-        request.setAttribute("param_name", param);
-        return "blog/index";
-    }
-
-
-    @ApiOperation("作品主页")
-    @GetMapping(value = {"", "/index"})
-    public String index(@RequestParam(value = "limit", defaultValue = "12") int limit, HttpServletRequest request) {
-        return this.index(1, limit, request);
-    }
-
-    @ApiOperation("作品主页-分页")
-    @ApiImplicitParams(value = {
-            @ApiImplicitParam(name = "page", value = "页数", paramType = "path", dataType = "int"),
-            @ApiImplicitParam(name = "limit", value = "每页数量", paramType = "form", dataType = "int")
-    })
-    @GetMapping(value = "/photo/page/{page}")
-    public String index(@PathVariable(name = "page") int page,
-                        @RequestParam(name = "limit", required = false, defaultValue = "9999") int limit,
-                        HttpServletRequest request
-    ) {
-        page = page < 0 || page > WebConst.MAX_PAGE ? 1 : page;
-        ContentQuery contentCond = new ContentQuery();
-        contentCond.setType(Types.PHOTO.getType());
-        PageInfo<Content> articles = contentService.getArticlesByCond(contentCond, page, limit);
+        PageInfo<Content> articles = contentService.searchArticle(keyword, page, limit);
         request.setAttribute("articles", articles);
-        request.setAttribute("active", "work");
-        return "site/index";
+        request.setAttribute("type", "搜索");
+        request.setAttribute("keyword", keyword);
+        return "site/category";
     }
 
-
-    @ApiOperation("作品内容")
-    @ApiImplicitParams(value = {
-            @ApiImplicitParam(name = "cid", value = "文章主键", paramType = "path", dataType = "int")
-    })
-    @GetMapping(value = "/photo/article/{cid}")
-    public String article(@PathVariable("cid") Integer cid,
-                          HttpServletRequest request
-    ) {
-        Content article = contentService.getAtricleById(cid);
-        request.setAttribute("archive", article);
-        request.setAttribute("active", "work");
-        return "site/works-details";
-    }
 
     /**
      * 抽取公共方法

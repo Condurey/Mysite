@@ -1,7 +1,6 @@
 <!DOCTYPE HTML>
 
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<!--<div th:replace="site/head::head(${commons.site_title()},${commons.google_site_verification()}, ${commons.baidu_site_verification()})"></div>-->
 <div th:replace="site/header::header(null,null)"></div>
 <body>
 <main class="container" role="main-inner-wrapper">
@@ -45,8 +44,6 @@
         </div>
     </div>
 </main>
-<!-- footer -->
-<!--        <div th:replace="site/footer::footer(${commons.site_title()},${commons.site_record()},${commons.site_url()})"></div>-->
 <div th:replace="site/footer::footer"></div>
 </body>
 </html>

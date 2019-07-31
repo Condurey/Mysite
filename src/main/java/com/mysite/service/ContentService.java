@@ -66,6 +66,15 @@ public interface ContentService {
      */
     PageInfo<Content> getArticlesByCond(ContentQuery contentQuery, int pageNum, int pageSize);
 
+
+    /**
+     * 根据metaId获取文章列表
+     *
+     * @param mid
+     * @return
+     */
+    PageInfo<Content> getArticlesByCatalog(Integer mid, int pageNum, int pageSize);
+
     /**
      * 获取最近的文章（只包含id和title）
      *

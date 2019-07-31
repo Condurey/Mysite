@@ -13,8 +13,20 @@ public class MetaQuery {
      * meta Name
      */
     private String name;
+
     /**
      * 类型
      */
     private String type;
+
+    /**
+     * 排序字段
+     */
+    private String order;
+
+    /**
+     * 查询数量
+     */
+    private int limit;
+
 }

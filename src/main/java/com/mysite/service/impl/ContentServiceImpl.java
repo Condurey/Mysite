@@ -40,7 +40,7 @@ public class ContentServiceImpl implements ContentService {
     @Autowired
     private MetaService metaService;
 
-    @Autowired
+    @Resource
     private RelationshipDao relationshipDao;
 
 
@@ -145,6 +145,14 @@ public class ContentServiceImpl implements ContentService {
             throw BusinessException.withErrorCode(ErrorConstant.Common.PARAM_IS_EMPTY);
         PageHelper.startPage(pageNum, pageSize);
         List<Content> contents = contentDao.getArticlesByCond(contentQuery);
+        PageInfo<Content> pageInfo = new PageInfo<>(contents);
+        return pageInfo;
+    }
+
+    @Override
+    public PageInfo<Content> getArticlesByCatalog(Integer mid, int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<Content> contents = contentDao.getArticlesByCatalog(mid);
         PageInfo<Content> pageInfo = new PageInfo<>(contents);
         return pageInfo;
     }

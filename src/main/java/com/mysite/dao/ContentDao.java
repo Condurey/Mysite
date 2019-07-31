@@ -66,6 +66,14 @@ public interface ContentDao {
     List<Content> getArticlesByCond(ContentQuery contentQuery);
 
     /**
+     * 根据metaId获取文章
+     *
+     * @param mid
+     * @return
+     */
+    List<Content> getArticlesByCatalog(@Param("mid") Integer mid);
+
+    /**
      * 获取文章总数量
      *
      * @return

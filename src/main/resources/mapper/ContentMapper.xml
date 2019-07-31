@@ -224,5 +224,12 @@
         </where>
     </select>
 
+    <select id="getArticlesByCatalog" resultMap="ContentMap" parameterType="Integer">
+    select a.*
+    from t_contents a left join t_relationships b on a.cid = b.cid
+    where b.mid = #{mid} and a.status = 'publish' and a.type = 'post'
+    order by a.created desc
+  </select>
+
 
 </mapper>
