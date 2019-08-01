@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" id="loading">
+<html id="loading" lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,7 +12,7 @@
     <meta name="description" content="The portfolio of Emil Nikov, freelance web designer and developer">
 	<meta name="author" content="Emil Nikov">
 
-    <link href="/error/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/error/css/style.css}">
 
     <link rel="shortcut icon" type="image/png" href="http://img.winterchen.com/favicon.ico">
     <link rel="apple-touch-icon-precomposed" type="image/png" href="http://enstyled.com/img/apple-touch-icon-precomposed.png">
@@ -58,16 +58,17 @@
 
 			<div class="col-sm-7">
 				<h2>Page not found</h2>
-				<p>The page you are looking for is not here.<br />Why don’t you try the <a href="/">homepage</a>?</p>
+                <p>The page you are looking for is not here.<br/>Why don’t you try the <a th:href="@{/}">homepage</a>?
+                </p>
 			</div>
 		</div>
 	</div>
 
 
-    <script src="/error/js/jki7owr.js"></script>
+    <script th:src="@{/error/js/jki7owr.js}"></script>
 	<script>try{Typekit.load();}catch(e){}</script>
 
-    <script src="/error/js/custom.js"></script>
+    <script th:src="@{/error/js/custom.js}"></script>
 
 </body>
 </html>

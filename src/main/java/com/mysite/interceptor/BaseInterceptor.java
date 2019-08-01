@@ -53,7 +53,11 @@ public class BaseInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
         String uri = request.getRequestURI();
-
+        String path = request.getContextPath();
+        String relativeUri = uri;
+        if (uri.startsWith(path)) {
+            relativeUri = uri.substring(path.length());
+        }
         LOGGE.info("UserAgent: {}", request.getHeader(USER_AGENT));
         LOGGE.info("用户访问地址: {}, 来路地址: {}", uri, authService.getIpAddrByRequest(request));
 
@@ -68,10 +72,10 @@ public class BaseInterceptor implements HandlerInterceptor {
                 request.getSession().setAttribute(WebConst.LOGIN_SESSION_KEY, user);
             }
         }
-        if (uri.startsWith("/admin") && !uri.startsWith("/admin/login") && null == user
-                && !uri.startsWith("/admin/css") && !uri.startsWith("/admin/images")
-                && !uri.startsWith("/admin/js") && !uri.startsWith("/admin/plugins")
-                && !uri.startsWith("/admin/editormd")) {
+        if (relativeUri.startsWith("/admin") && !relativeUri.startsWith("/admin/login") && null == user
+                && !relativeUri.startsWith("/admin/css") && !relativeUri.startsWith("/admin/images")
+                && !relativeUri.startsWith("/admin/js") && !relativeUri.startsWith("/admin/plugins")
+                && !relativeUri.startsWith("/admin/editormd")) {
             response.sendRedirect(request.getContextPath() + "/admin/login");
             return false;
         }

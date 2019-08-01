@@ -56,7 +56,7 @@ public class HomeController extends BaseController {
     private AuthService authService;
 
     @ApiIgnore
-    @GetMapping(value = {"/blog/about"})
+    @GetMapping(value = {"/about"})
     public String getAbout(HttpServletRequest request) {
         return "site/about";
     }
@@ -65,7 +65,7 @@ public class HomeController extends BaseController {
     @ApiImplicitParams(value = {
             @ApiImplicitParam(name = "limit", value = "每页数量", paramType = "form", dataType = "int")
     })
-    @GetMapping(value = {"/blog", "/blog/index"})
+    @GetMapping(value = {"", "/index"})
     public String blogIndex(HttpServletRequest request,
                             @RequestParam(name = "limit", required = false, defaultValue = "11") int limit
     ) {
@@ -77,7 +77,7 @@ public class HomeController extends BaseController {
             @ApiImplicitParam(name = "page", value = "页数", paramType = "path", dataType = "int"),
             @ApiImplicitParam(name = "limit", value = "每页数量", paramType = "form", dataType = "int")
     })
-    @GetMapping(value = "/blog/page/{page}")
+    @GetMapping(value = "/page/{page}")
     public String blogIndex(@PathVariable("page") int page,
                             @RequestParam(value = "limit", required = false, defaultValue = "10") int limit,
                             HttpServletRequest request
@@ -97,7 +97,7 @@ public class HomeController extends BaseController {
     @ApiImplicitParams(value = {
             @ApiImplicitParam(name = "cid", value = "文章主键", paramType = "path", dataType = "int", required = true)
     })
-    @GetMapping(value = "/blog/article/{cid}")
+    @GetMapping(value = "/article/{cid}")
     public String post(@PathVariable("cid") Integer cid,
                        HttpServletRequest request
     ) {
@@ -117,7 +117,7 @@ public class HomeController extends BaseController {
     /**
      * 评论操作
      */
-    @PostMapping(value = "/blog/comment")
+    @PostMapping(value = "/comment")
     @ResponseBody
     @Transactional(rollbackFor = BusinessException.class)
     public APIResponse comment(@RequestParam Integer cid, @RequestParam Integer coid,
@@ -199,7 +199,7 @@ public class HomeController extends BaseController {
     }
 
     @ApiOperation("归档页")
-    @GetMapping(value = {"/blog/archives"})
+    @GetMapping(value = {"/archives"})
     public String archives(HttpServletRequest request) {
         ContentQuery contentQuery = new ContentQuery();
         contentQuery.setType(Types.ARTICLE.getType());
@@ -213,7 +213,7 @@ public class HomeController extends BaseController {
      *
      * @return
      */
-    @GetMapping(value = "/blog/links")
+    @GetMapping(value = "/links")
     public String links(HttpServletRequest request) {
         MetaQuery metaQuery = new MetaQuery();
         metaQuery.setType(Types.LINK.getType());
@@ -226,7 +226,7 @@ public class HomeController extends BaseController {
     @ApiImplicitParams(value = {
             @ApiImplicitParam(name = "category", value = "分类名", paramType = "path", dataType = "String", required = true)
     })
-    @GetMapping(value = "/blog/category/{category}")
+    @GetMapping(value = "/category/{category}")
     public String categories(@PathVariable("category") String category,
                              HttpServletRequest request
     ) {
@@ -239,7 +239,7 @@ public class HomeController extends BaseController {
             @ApiImplicitParam(name = "page", value = "页数", paramType = "path", dataType = "int"),
             @ApiImplicitParam(name = "limit", value = "每页数量", paramType = "form", dataType = "int")
     })
-    @GetMapping(value = "/blog/category/{category}/page/{page}")
+    @GetMapping(value = "/category/{category}/page/{page}")
     public String categories(@PathVariable("category") String category,
                              @PathVariable("page") int page,
                              @RequestParam(name = "limit", required = false, defaultValue = "10") int limit,
@@ -263,7 +263,7 @@ public class HomeController extends BaseController {
     @ApiImplicitParams(value = {
             @ApiImplicitParam(name = "tag", value = "标签名", paramType = "path", dataType = "String", required = true)
     })
-    @GetMapping(value = "/blog/tag/{tag}")
+    @GetMapping(value = "/tag/{tag}")
     public String tags(@PathVariable("tag") String tag,
                        HttpServletRequest request
     ) {
@@ -276,7 +276,7 @@ public class HomeController extends BaseController {
             @ApiImplicitParam(name = "page", value = "页数", paramType = "path", dataType = "int", required = true),
             @ApiImplicitParam(name = "limit", value = "每页数量", paramType = "form", dataType = "int")
     })
-    @GetMapping(value = "/blog/tag/{tag}/page/{page}")
+    @GetMapping(value = "/tag/{tag}/page/{page}")
     public String tags(@PathVariable("tag") String tag,
                        @PathVariable("page") int page,
                        @RequestParam(name = "limit", required = false, defaultValue = "10") int limit,
@@ -299,7 +299,7 @@ public class HomeController extends BaseController {
     @ApiImplicitParams(value = {
             @ApiImplicitParam(name = "param", value = "搜索的文字", paramType = "form", dataType = "String", required = true)
     })
-    @GetMapping("/blog/search")
+    @GetMapping("/search")
     public String search(@RequestParam(name = "param") String param,
                          HttpServletRequest request
     ) {
@@ -313,7 +313,7 @@ public class HomeController extends BaseController {
             @ApiImplicitParam(name = "page", value = "页数", paramType = "path", dataType = "int", required = true),
             @ApiImplicitParam(name = "limit", value = "每页数量", paramType = "form", dataType = "int")
     })
-    @GetMapping(value = "/blog/search/{keyword}/page/{page}")
+    @GetMapping(value = "/search/{keyword}/page/{page}")
     public String search(@PathVariable("keyword") String keyword,
                          @PathVariable("page") int page,
                          @RequestParam(name = "limit", required = false, defaultValue = "10") int limit,

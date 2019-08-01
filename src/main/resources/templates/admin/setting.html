@@ -184,7 +184,7 @@
     function saveSetting() {
         var param = $('#global-form').serialize();
         tale.post({
-            url : '/admin/setting',
+            url: '/blog/admin/setting',
             data: param,
             success: function (result) {
                 if(result && result.code == 'success'){
@@ -202,7 +202,7 @@
     function saveIndiviSetting() {
         var param = $('#indivi-form').serialize();
         tale.post({
-            url : '/admin/setting',
+            url: '/blog/admin/setting',
             data: param,
             success: function (result) {
                 if(result && result.code == 'success'){
@@ -238,7 +238,7 @@
             bk_path: $('#backup_dir').val()
         };
         tale.post({
-            url : '/admin/setting/backup',
+            url: '/blog/admin/setting/backup',
             data: param,
             success: function (result) {
                 if(result && result.code == 'success'){
@@ -248,7 +248,7 @@
                         $('#backup_dir').val('');
                     }
                     if(result.payload.sql_path){
-                        window.location.href = '/upload/' + result.payload.sql_path;
+                        window.location.href = '/blog//upload/' + result.payload.sql_path;
                     }
                 } else {
                     tale.alertError(result.msg || '备份失败');

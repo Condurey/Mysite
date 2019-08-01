@@ -32,13 +32,13 @@
 <![endif]-->
 <header id="header" class="header bg-white">
     <div class="navbar-container">
-        <a class="navbar-logo" th:href="@{/blog}">
+        <a class="navbar-logo" th:href="@{/}">
             <img th:src="@{/site/images/logo.png}" alt="首页"/>
         </a>
         <div class="navbar-menu">
-            <a th:href="@{/blog/archives}">归档</a>
-            <a th:href="@{/blog/links}">友链</a>
-            <a th:href="@{/blog/about}">关于</a>
+            <a th:href="@{/archives}">归档</a>
+            <a th:href="@{/links}">友链</a>
+            <a th:href="@{/about}">关于</a>
         </div>
         <div class="navbar-search" onclick="">
             <span class="icon-search"></span>
@@ -52,9 +52,9 @@
         <div class="navbar-mobile-menu" onclick="">
             <span class="icon-menu cross"><span class="middle"></span></span>
             <ul>
-                <li><a th:href="@{/blog/archives}">归档</a></li>
-                <li><a th:href="@{/blog/links}">友链</a></li>
-                <li><a th:href="@{/blog/about}">关于</a></li>
+                <li><a th:href="@{/archives}">归档</a></li>
+                <li><a th:href="@{/links}">友链</a></li>
+                <li><a th:href="@{/about}">关于</a></li>
             </ul>
         </div>
     </div>

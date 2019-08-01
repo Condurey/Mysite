@@ -65,7 +65,7 @@
             title:'确定删除这个页面吗?',
             then: function () {
                 tale.post({
-                    url : '/admin/page/delete',
+                    url: '/blog/admin/page/delete',
                     data: {cid: cid},
                     success: function (result) {
                         if(result && result.code == 'success'){

@@ -112,7 +112,7 @@
     function saveSetting() {
         var param = $('#user-form').serialize();
         tale.post({
-            url : '/admin/profile',
+            url: '/blog/admin/profile',
             data: param,
             success: function (result) {
                 if(result && result.code == 'success'){
@@ -128,7 +128,7 @@
         submitHandler: function (form) {
             var params = $("#pwd-form").serialize();
             tale.post({
-                url : '/admin/password',
+                url: '/blog/admin/password',
                 data: params,
                 success: function (result) {
                     if(result && result.code == 'success'){

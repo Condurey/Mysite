@@ -82,7 +82,7 @@
             title:'确定删除该文章吗?',
             then: function () {
                 tale.post({
-                    url : '/admin/article/delete',
+                    url: '/blog/admin/article/delete',
                     data: {cid: cid},
                     success: function (result) {
                         if(result && result.code == 'success'){

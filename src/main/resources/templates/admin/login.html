@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" th:with="pic=${commons.random(5, '.png')}" xmlns:th="http://www.thymeleaf.org"
-      th:style="'background:url(/admin/images/bg/'+@{${pic}}+');no-repeat; background-size: cover;'">
+      th:style="'background:url(/blog/admin/images/bg/'+@{${pic}}+');no-repeat; background-size: cover;'">
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
@@ -50,7 +50,7 @@
     </style>
 
 </head>
-<body th:style="'background:url(/admin/images/bg/'+@{${pic}}+');no-repeat; background-size: cover;'" >
+<body th:style="'background:url(/blog/admin/images/bg/'+@{${pic}}+');no-repeat; background-size: cover;'">
 <div style="margin: 0 auto; padding-bottom: 0%; padding-top: 7.5%; width: 380px;">
     <div class="panel panel-color panel-danger panel-pages panel-shadow">
         <div class="panel-heading bg-img">
@@ -99,11 +99,11 @@
     var tale = new $.tale();
     function checkForm() {
         tale.post({
-            url: '/admin/login',
+            url: '/blog/admin/login',
             data: $("#loginForm").serialize(),
             success: function (result) {
                 if (result && result.code == 'success') {
-                    window.location.href = '/admin/index';
+                    window.location.href = '/blog/admin/index';
                 } else {
                     tale.alertError(result.msg || '登录失败');
                 }
